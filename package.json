@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && xcopy src\\data\\generated_users.json dist\\",
     "lint": "eslint .",
     "preview": "vite preview"
   },
