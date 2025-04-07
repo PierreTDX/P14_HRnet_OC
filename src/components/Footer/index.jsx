@@ -1,11 +1,13 @@
 import './footer.scss'
+import LogoName from '../../assets/img/logoNameNoBackground.png'
+
 
 function Footer() {
 
     return (
         <>
             <footer>
-                {/* Footer */}
+                <img src={LogoName} alt="logo" />
             </footer>
         </>
     )

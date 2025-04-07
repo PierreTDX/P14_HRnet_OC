@@ -9,14 +9,9 @@ function CreateEmployee() {
     return (
         <>
             <main>
-                <div className="title">
-                    <h1>HRnet</h1>
-                </div>
-
                 <div className="container">
-                    <NavLink to={'/'}>Home</NavLink>
-                    <NavLink to={'/listemployees'}>View Current Employees</NavLink>
-                    <h2>Create Employee</h2>
+
+                    <h1>Create Employee</h1>
 
                     <form id="create-employee" onSubmit={saveEmployee}>
                         <label htmlFor="first-name">First Name</label>
