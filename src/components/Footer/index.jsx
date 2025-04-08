@@ -1,5 +1,5 @@
 import './footer.scss'
-import LogoName from '../../assets/img/logoNameNoBackground.png'
+import LogoName from '../../assets/img/logoNameNoBackground.webp'
 
 
 function Footer() {
@@ -7,7 +7,7 @@ function Footer() {
     return (
         <>
             <footer>
-                <img src={LogoName} alt="logo" />
+                <img width='193px' height='14px' src={LogoName} alt="logo" />
             </footer>
         </>
     )

@@ -1,5 +1,18 @@
 @use './../../utils/style/variables.scss';
 
+.pageTitle {
+    text-align: center;
+    background-color: variables.$defaultBackgroundTitle;
+    padding: 5px;
+    font-size: 24px;
+    color: variables.$defaultTextColorTitle;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 14px;
+}
+
 .title {
     display: flex;
     align-items: center;

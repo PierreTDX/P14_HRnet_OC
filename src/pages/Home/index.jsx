@@ -13,8 +13,8 @@ function Home() {
             <main className='home'>
                 <h1>Welcome to your employee records management system</h1>
                 <nav className="navHome">
-                    <NavLink to={'/createemployee'} className='btn btnHome'><img src={AddUser} alt="icon add user" className='icon' />Create Employee</NavLink>
-                    <NavLink to={'/listemployees'} className='btn btnHome'><img src={ListUsers} alt="icon user list" className='icon' />View Current Employees</NavLink>
+                    <NavLink to={'/createemployee'} className='btn btnHome'><img width='24px' height='24px' src={AddUser} alt="icon add user" className='icon' />Create Employee</NavLink>
+                    <NavLink to={'/listemployees'} className='btn btnHome'><img width='24px' height='24px' src={ListUsers} alt="icon user list" className='icon' />View Current Employees</NavLink>
                 </nav>
             </main>
         </>

@@ -22,14 +22,15 @@ header {
 }
 
 .logo h1 {
-    color: hsl(72.23deg 86.55% 23.33%);
+    color: variables.$defaultTextColorLogo;
     font-weight: 500;
     font-size: 48px;
 }
 
-.logo img {
-    width: 100px;
-}
+// .logo img {
+//     width: 100px;
+//     height: auto;
+// }
 
 nav {
     display: flex;
@@ -37,10 +38,10 @@ nav {
 }
 
 .btn {
-    background-color: hsl(70.47deg 75.63% 38.63%);
+    background-color: variables.$defaultBackgroundButton;
     text-decoration: none;
     font-weight: 700;
-    color: white;
+    color: variables.$defaultTextColorButton;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -50,17 +51,19 @@ nav {
 }
 
 :hover.btn {
-    background-color: hsl(70.47deg 75.63% 32%);
+    background-color: variables.$defaultBackgroundButtonHover;
 }
 
-.icon {
-    width: 24px;
-}
+// .icon {
+//     width: 24px;
+//     height: auto;
+// }
 
 @container (max-width: 700px) {
 
     .logo img {
         width: 60px;
+        height: auto;
     }
 
     .logo h1 {
@@ -73,6 +76,7 @@ nav {
 
     .icon {
         width: 16px;
+        height: 16px;
     }
 
     .btn {

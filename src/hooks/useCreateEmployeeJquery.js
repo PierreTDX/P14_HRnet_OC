@@ -3,31 +3,31 @@ import { states } from '../data/states';
 
 export function useCreateEmployee() {
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    // On attend que le DOM soit prêt avant d'utiliser jQuery UI
-    window.$(() => {
-        const stateSelect = document.getElementById('state');
-        states.forEach(function(state) {
-            const option = document.createElement('option');
-            option.value = state.abbreviation;
-            option.text = state.name;
-            stateSelect.appendChild(option);
-        });
+  //   // On attend que le DOM soit prêt avant d'utiliser jQuery UI
+  //   window.$(() => {
+  //       const stateSelect = document.getElementById('state');
+  //       states.forEach(function(state) {
+  //           const option = document.createElement('option');
+  //           option.value = state.abbreviation;
+  //           option.text = state.name;
+  //           stateSelect.appendChild(option);
+  //       });
     
-        window.$( "#department" ).selectmenu();
-        window.$( "#state" ).selectmenu();
+  //       window.$( "#department" ).selectmenu();
+  //       window.$( "#state" ).selectmenu();
     
-        window.$('#date-of-birth').datetimepicker({
-            timepicker: false,
-            format: 'm/d/Y'
-        });
-        window.$('#start-date').datetimepicker({
-            timepicker: false,
-            format: 'm/d/Y'
-        });
-    });
-  }, []); // Le tableau vide assure que ce code ne s'exécute qu'une seule fois, après le premier rendu
+  //       window.$('#date-of-birth').datetimepicker({
+  //           timepicker: false,
+  //           format: 'm/d/Y'
+  //       });
+  //       window.$('#start-date').datetimepicker({
+  //           timepicker: false,
+  //           format: 'm/d/Y'
+  //       });
+  //   });
+  // }, []); // Le tableau vide assure que ce code ne s'exécute qu'une seule fois, après le premier rendu
 
   const saveEmployee = (e) => {
     e.preventDefault();

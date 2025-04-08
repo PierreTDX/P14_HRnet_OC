@@ -1,13 +1,63 @@
 import './createEmployee.scss'
 import { useCreateEmployee } from '../../hooks/useCreateEmployeeJquery'
+import { useForm } from 'react-hook-form'
 
 function CreateEmployee() {
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const { saveEmployee } = useCreateEmployee()
+
+    const onSubmit = (data) => {
+        // saveEmployee(data); // Sauvegarde des données de l'employé
+        console.log(data); // Affiche les données dans la console
+    }
+
+    const namesPattern = /^([a-zA-Z-' ]+)$/
+    const zipCodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/
+
+    const registerOptions = {
+        firstName: {
+            required: "* First name is required",
+            pattern: {
+                value: namesPattern,
+                message:
+                    "* First name should only contain letters, - or ' ",
+            },
+        },
+    }
 
     return (
         <>
+            <h1 className='pageTitle'>Create Employee</h1>
             <main>
+                <form id="create-employee" onSubmit={handleSubmit(onSubmit)}>
+
+                    <label htmlFor="firstName">First Name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        autoComplete="off"
+                        {...register("firstName", registerOptions.firstName)}
+                        aria-invalid={errors.firstName ? "true" : "false"} // Indication que le champ est invalide si erreur
+                        aria-describedby="firstNameError" // Associé à l'élément d'erreur
+                    />
+                    {errors.firstName && (
+                        <p id="firstNameError" role="alert" aria-live="assertive" className='errorMessage'>
+                            {errors.firstName.message}
+                        </p>
+                    )}
+
+                    <label htmlFor="lastName">Last Name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lasttName"
+                    />
+
+                    <button className='center' type="submit">Save</button>
+                </form>
+            </main>
+            {/* <main>
                 <div className="container">
 
                     <h1>Create Employee</h1>
@@ -57,7 +107,7 @@ function CreateEmployee() {
                         Employee Created!
                     </div>
                 </div>
-            </main>
+            </main> */}
         </>
     )
 }
