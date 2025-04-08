@@ -41,3 +41,9 @@ label {
     margin: auto;
     margin-top: 16px;
 }
+
+@media (max-width: 740px) {
+    .pageTitle {
+        font-size: 18px;
+    }
+}
