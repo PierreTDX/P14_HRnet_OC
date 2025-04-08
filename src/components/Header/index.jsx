@@ -17,14 +17,14 @@ function Header() {
     return (
         <>
             <header>
-                <NavLink to={'/'} className='logo'>
+                <NavLink to={'/'} className='logo' title='Go Home'>
                     <img src={Logo} alt="logo" />
                     <h1>HRnet</h1>
                 </NavLink>
                 {!isHome && (
                     <nav>
-                        {!isCreatePage && (<NavLink to={'/createemployee'} className='btn'><img src={AddUser} alt="icon add user" className='icon' />Create Employee</NavLink>)}
-                        {!isListPage && (<NavLink to={'/listemployees'} className='btn'><img src={ListUsers} alt="icon user list" className='icon' />View Current Employees</NavLink>)}
+                        {!isCreatePage && (<NavLink to={'/createemployee'} className='btn'><img src={AddUser} alt="icon add user" className='icon' title='Create Employee' /><span className="btntext">Create Employee</span></NavLink>)}
+                        {!isListPage && (<NavLink to={'/listemployees'} className='btn'><img src={ListUsers} alt="icon user list" className='icon' title='View Current Employees' /><span className="btntext">View Current Employees</span></NavLink>)}
                     </nav>
                 )}
             </header>

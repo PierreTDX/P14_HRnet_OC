@@ -1,5 +1,4 @@
 import './createEmployee.scss'
-import { NavLink } from 'react-router-dom'
 import { useCreateEmployee } from '../../hooks/useCreateEmployeeJquery'
 
 function CreateEmployee() {
