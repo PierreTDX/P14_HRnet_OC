@@ -44,14 +44,8 @@
     }
 }
 
-// /* Masquer les colonnes spécifiques sur les petits écrans (moins de 768px) */
-// @media (max-width: 1200px) {
-
-//     /* Cibler les colonnes par leur classe CSS générée */
-//     .rdt_TableCol:nth-child(3),
-//     /* Exemple pour masquer la 3ème colonne */
-//     .rdt_TableCol:nth-child(4) {
-//         /* Exemple pour masquer la 4ème colonne */
-//         display: none;
-//     }
-// }
+@media (max-width: 740px) {
+    .customTable .rdt_TableHeadRow {
+        font-size: 14px;
+    }
+}
