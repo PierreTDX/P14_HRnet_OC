@@ -1,1 +1,57 @@
-@use './../../utils/style/variables.scss'
+@use './../../utils/style/variables.scss';
+
+
+
+/*pour le tableau */
+.customTable .rdt_Table {
+    font-size: 14px;
+}
+
+/*pour l'en-tête */
+.customTable .rdt_TableHeadRow {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: variables.$defaultBackgroundTableHead;
+}
+
+/* pour les lignes */
+.customTable .rdt_TableRow {
+    font-size: 14px;
+}
+
+/* pour la pagination */
+.rdt_Pagination {
+    font-size: 16px !important;
+}
+
+/* Lignes impaires : */
+.customTable .rdt_TableRow:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Lignes paires : */
+.customTable .rdt_TableRow:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.rdt_TableRow:hover {
+    background-color: variables.$defaultBackgroundTableRowHover !important;
+}
+
+@media (min-width: 1320px) {
+    .tableContent {
+        margin: 0 100px;
+    }
+}
+
+// /* Masquer les colonnes spécifiques sur les petits écrans (moins de 768px) */
+// @media (max-width: 1200px) {
+
+//     /* Cibler les colonnes par leur classe CSS générée */
+//     .rdt_TableCol:nth-child(3),
+//     /* Exemple pour masquer la 3ème colonne */
+//     .rdt_TableCol:nth-child(4) {
+//         /* Exemple pour masquer la 4ème colonne */
+//         display: none;
+//     }
+// }
