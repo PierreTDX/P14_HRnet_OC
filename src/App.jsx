@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import CreateEmployee from "./pages/CreateEmployee"
 import ListEmployees from "./pages/ListEmployees"
+import EmployeeDetail from './pages/DetailEmployee'
 import Error404 from "./components/404"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/createemployee" element={<CreateEmployee />} />
           <Route path="/listemployees" element={<ListEmployees />} />
+          <Route path="/detailemployees" element={<EmployeeDetail />} />
           <Route path="/*" element={<Error404 />} />
         </Routes>
         <Footer />

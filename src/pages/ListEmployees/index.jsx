@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DataTable, { createTheme } from 'react-data-table-component';
+import iconSearch from '../../assets/img/chercher.png'
 import './listEmployees.scss';
+import { states } from '../../data/states';
 
 // Créer un thème personnalisé
 createTheme(
@@ -20,6 +23,12 @@ const ListEmployees = () => {
     const [stateFilter, setStateFilter] = useState('');
     const [departementFilter, setDepartementFilter] = useState('');
 
+    const navigate = useNavigate();
+
+    // Récupérer les données de la ligne du tableau pour l'envoyer à la page désignée
+    const handleRowClicked = (row) => {
+        navigate('/detailemployees', { state: { employee: row } });
+    };
 
     useEffect(() => {
         // Récupérer les données depuis le localStorage
@@ -159,35 +168,101 @@ const ListEmployees = () => {
         setSearch(event.target.value);
     };
 
+    const [showDepartmentSearch, setShowDepartmentSearch] = useState(false);
+    const toggleDepartmentSearch = () => {
+        setShowDepartmentSearch(!showDepartmentSearch);  // Inverse l'état pour afficher/masquer l'input de recherche de département
+    };
+
+    const [showStateSearch, setShowStateSearch] = useState(false);
+    const toggleStateSearch = () => {
+        setShowStateSearch(!showStateSearch);  // Inverse l'état pour afficher/masquer l'input de recherche de l'état
+    };
+
     return (
         <>
             <h1 className='pageTitle'>Current Employees</h1>
             <main>
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Search all columns"
-                        value={search}
-                        onChange={handleSearch}
-                        className="search-input"
-                    />
-                    <div className="pagination-info">
-                        <p>{filteredData.length}/{employees.length} results</p>
+                <div className="searchContainer">
+                    <div className="searchBar">
+                        <div className="searchIcon">
+                            <img src={iconSearch} alt="icon search" width={18} height={18} />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search all columns"
+                            value={search}
+                            onChange={handleSearch}
+                            className="searchInput"
+                        />
                     </div>
+                    {/* Affichage conditionnel du + uniquement quand le select de recherche n'est pas visible */}
+                    {!showDepartmentSearch && (
+                        <div onClick={toggleDepartmentSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
+                            +
+                        </div>
+                    )}
+
+                    {/* Affichage conditionnel du select de recherche de département */}
+                    {showDepartmentSearch && (
+                        <div className='searchDepartment'>
+                            <select
+                                name="department"
+                                id="department"
+                                value={departementFilter}
+                                onChange={(e) => setDepartementFilter(e.target.value)}
+                            >
+                                <option value="">Select Department</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Legal">Legal</option>
+                            </select>
+                        </div>
+                    )}
+
+                    {/* Affichage conditionnel du + pour l'état uniquement quand le select de département est visible */}
+                    {showDepartmentSearch && !showStateSearch && (
+                        <div onClick={toggleStateSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
+                            +
+                        </div>
+                    )}
+
+                    {/* Affichage conditionnel du select de recherche d'état */}
+                    {showStateSearch && (
+                        <div className='searchState'>
+                            <select
+                                name="state"
+                                id="state"
+                                value={stateFilter}
+                                onChange={(e) => setStateFilter(e.target.value)}
+                            >
+                                <option value="">Select State</option>
+                                {states.map(state => (
+                                    <option key={state.abbreviation} value={state.abbreviation}>
+                                        {state.abbreviation} - {state.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
-                <div className='tableContent'>
-                    <DataTable
-                        className='customTable'
-                        columns={columns}
-                        data={filteredData}
-                        pagination
-                        pointerOnHover
-                        striped
-                        ariaLabel
-                        theme="custom"
-                    />
+                <DataTable
+                    className='customTable'
+                    columns={columns}
+                    data={filteredData}
+                    pagination
+                    pointerOnHover
+                    striped
+                    ariaLabel
+                    theme="custom"
+                    onRowClicked={handleRowClicked}
+                    persistTableHead
+                />
+                <div className="paginationInfo">
+                    <p>{filteredData.length}/{employees.length} results</p>
                 </div>
-            </main>
+            </main >
         </>
     );
 };

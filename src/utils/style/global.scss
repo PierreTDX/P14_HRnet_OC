@@ -2,7 +2,6 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    font-display: swap;
     margin: 0;
     padding: 0;
 }
@@ -13,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
+    box-sizing: border-box;
 }
 
 .hidden {
@@ -41,4 +41,10 @@ p {
 
 p {
     font-size: 14px;
+}
+
+@media (min-width: 1320px) {
+    main {
+        margin: 20px 100px;
+    }
 }
