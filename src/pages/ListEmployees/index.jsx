@@ -77,44 +77,14 @@ const ListEmployees = () => {
                 { name: 'First Name', selector: row => row.firstName, sortable: true },
                 { name: 'Last Name', selector: row => row.lastName, sortable: true },
                 { name: 'Start Date', selector: row => new Date(row.startDate), sortable: true, format: row => row.startDate },
-                {
-                    name:
-                        (
-                            <div className="state-header">
-                                Department
-                                <input
-                                    type="text"
-                                    placeholder="Filter"
-                                    onChange={(e) => setDepartementFilter(e.target.value)}
-                                    className="state-filter-input"
-                                />
-                            </div>
-                        ),
-
-                    selector: row => row.department, sortable: true
-                }
+                { name: 'Department', selector: row => row.department, sortable: true }
             ]);
         } else if (windowWidth > 768 && windowWidth <= 1024) {
             setColumns([
                 { name: 'First Name', selector: row => row.firstName, sortable: true },
                 { name: 'Last Name', selector: row => row.lastName, sortable: true },
                 { name: 'Start Date', selector: row => new Date(row.startDate), sortable: true, format: row => row.startDate },
-                {
-                    name:
-                        (
-                            <div className="state-header">
-                                Department
-                                <input
-                                    type="text"
-                                    placeholder="Filter"
-                                    onChange={(e) => setDepartementFilter(e.target.value)}
-                                    className="state-filter-input"
-                                />
-                            </div>
-                        ),
-
-                    selector: row => row.department, sortable: true
-                },
+                { name: 'Department', selector: row => row.department, sortable: true },
                 { name: 'Street', selector: row => row.street, sortable: true },
                 { name: 'City', selector: row => row.city, sortable: true }
             ]);
@@ -123,42 +93,11 @@ const ListEmployees = () => {
                 { name: 'First Name', selector: row => row.firstName, sortable: true },
                 { name: 'Last Name', selector: row => row.lastName, sortable: true },
                 { name: 'Start Date', selector: row => new Date(row.startDate), sortable: true, format: row => row.startDate },
-                {
-                    name:
-                        (
-                            <div className="state-header">
-                                Department
-                                <input
-                                    type="text"
-                                    placeholder="Filter"
-                                    onChange={(e) => setDepartementFilter(e.target.value)}
-                                    className="state-filter-input"
-                                />
-                            </div>
-                        ),
-
-                    selector: row => row.department, sortable: true
-                },
+                { name: 'Department', selector: row => row.department, sortable: true },
                 { name: 'Date of Birth', selector: row => new Date(row.dateOfBirth), sortable: true, format: row => row.dateOfBirth },
                 { name: 'Street', selector: row => row.street, sortable: true },
                 { name: 'City', selector: row => row.city, sortable: true },
-                {
-                    name:
-                        (
-                            <div className="state-header">
-                                State
-                                <input
-                                    type="text"
-                                    placeholder="Filter"
-                                    onChange={(e) => setStateFilter(e.target.value)}
-                                    className="state-filter-input"
-                                />
-                            </div>
-                        ),
-                    selector: row => row.state,
-                    sortable: true,
-                    width: '90px'
-                },
+                { name: 'State', selector: row => row.state, sortable: true, width: '90px' },
                 { name: 'Zip Code', selector: row => row.zipCode, sortable: true, width: '118px' }
             ]);
         }
@@ -168,14 +107,27 @@ const ListEmployees = () => {
         setSearch(event.target.value);
     };
 
+
     const [showDepartmentSearch, setShowDepartmentSearch] = useState(false);
+    const [showStateSearch, setShowStateSearch] = useState(false);
+
+
+    // Toggle pour afficher/masquer le select département
     const toggleDepartmentSearch = () => {
-        setShowDepartmentSearch(!showDepartmentSearch);  // Inverse l'état pour afficher/masquer l'input de recherche de département
+        setShowDepartmentSearch((prev) => !prev);
     };
 
-    const [showStateSearch, setShowStateSearch] = useState(false);
+    // Toggle pour afficher/masquer le select état
     const toggleStateSearch = () => {
-        setShowStateSearch(!showStateSearch);  // Inverse l'état pour afficher/masquer l'input de recherche de l'état
+        setShowStateSearch((prev) => !prev);
+    };
+
+    // Fonction pour masquer les deux selects avec le bouton -
+    const hideBothSearches = () => {
+        setShowDepartmentSearch(false);
+        setShowStateSearch(false);
+        setDepartementFilter('');  // Réinitialiser la valeur du département
+        setStateFilter('');        // Réinitialiser la valeur de l'état
     };
 
     return (
@@ -195,8 +147,8 @@ const ListEmployees = () => {
                             className="searchInput"
                         />
                     </div>
-                    {/* Affichage conditionnel du + uniquement quand le select de recherche n'est pas visible */}
-                    {!showDepartmentSearch && (
+                    {/* Affichage du + pour afficher le select de département */}
+                    {!showDepartmentSearch && !showStateSearch && (
                         <div onClick={toggleDepartmentSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
                             +
                         </div>
@@ -204,7 +156,7 @@ const ListEmployees = () => {
 
                     {/* Affichage conditionnel du select de recherche de département */}
                     {showDepartmentSearch && (
-                        <div className='searchDepartment'>
+                        <div className="searchDepartment">
                             <select
                                 name="department"
                                 id="department"
@@ -221,7 +173,7 @@ const ListEmployees = () => {
                         </div>
                     )}
 
-                    {/* Affichage conditionnel du + pour l'état uniquement quand le select de département est visible */}
+                    {/* Affichage du + pour afficher le select d'état, uniquement après le département */}
                     {showDepartmentSearch && !showStateSearch && (
                         <div onClick={toggleStateSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
                             +
@@ -230,7 +182,7 @@ const ListEmployees = () => {
 
                     {/* Affichage conditionnel du select de recherche d'état */}
                     {showStateSearch && (
-                        <div className='searchState'>
+                        <div className="searchState">
                             <select
                                 name="state"
                                 id="state"
@@ -238,12 +190,19 @@ const ListEmployees = () => {
                                 onChange={(e) => setStateFilter(e.target.value)}
                             >
                                 <option value="">Select State</option>
-                                {states.map(state => (
+                                {states.map((state) => (
                                     <option key={state.abbreviation} value={state.abbreviation}>
                                         {state.abbreviation} - {state.name}
                                     </option>
                                 ))}
                             </select>
+                        </div>
+                    )}
+
+                    {/* Affichage du - pour cacher les deux inputs une fois qu'ils sont affichés */}
+                    {showDepartmentSearch && showStateSearch && (
+                        <div onClick={hideBothSearches} style={{ cursor: 'pointer', fontSize: '24px' }}>
+                            -
                         </div>
                     )}
                 </div>

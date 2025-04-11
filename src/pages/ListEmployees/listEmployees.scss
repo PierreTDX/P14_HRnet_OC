@@ -95,26 +95,6 @@
     background-color: variables.$defaultBackgroundTableRowHover !important;
 }
 
-.state-header {
-    position: relative;
-
-    .state-filter-input {
-        font-size: 12px;
-        width: 90%;
-        height: 15px;
-        margin-top: 5px;
-        display: none;
-        position: absolute;
-        bottom: -18px;
-        left: 0;
-        z-index: 10;
-    }
-
-    &:hover .state-filter-input {
-        display: block;
-    }
-}
-
 @media (max-width: 740px) {
     .customTable .rdt_TableHeadRow {
         font-size: 14px;
