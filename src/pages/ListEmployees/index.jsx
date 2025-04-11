@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DataTable, { createTheme } from 'react-data-table-component';
 import iconSearch from '../../assets/img/chercher.png'
+import iconplus from '../../assets/img/plus.png'
+import iconminus from '../../assets/img/moins.png'
 import './listEmployees.scss';
 import { states } from '../../data/states';
 
@@ -108,103 +110,95 @@ const ListEmployees = () => {
     };
 
 
+    const [filterStep, setFilterStep] = useState(0); // 0: rien, 1: department, 2: state
+
     const [showDepartmentSearch, setShowDepartmentSearch] = useState(false);
     const [showStateSearch, setShowStateSearch] = useState(false);
 
 
-    // Toggle pour afficher/masquer le select département
-    const toggleDepartmentSearch = () => {
-        setShowDepartmentSearch((prev) => !prev);
+    const handleToggleFilterInputs = () => {
+        if (filterStep === 0) {
+            setShowDepartmentSearch(true);
+            setFilterStep(1);
+        } else if (filterStep === 1) {
+            setShowStateSearch(true);
+            setFilterStep(2);
+        } else {
+            // Réinitialise tout
+            setShowDepartmentSearch(false);
+            setShowStateSearch(false);
+            setDepartementFilter('');
+            setStateFilter('');
+            setFilterStep(0);
+        }
     };
 
-    // Toggle pour afficher/masquer le select état
-    const toggleStateSearch = () => {
-        setShowStateSearch((prev) => !prev);
-    };
-
-    // Fonction pour masquer les deux selects avec le bouton -
-    const hideBothSearches = () => {
-        setShowDepartmentSearch(false);
-        setShowStateSearch(false);
-        setDepartementFilter('');  // Réinitialiser la valeur du département
-        setStateFilter('');        // Réinitialiser la valeur de l'état
-    };
 
     return (
         <>
             <h1 className='pageTitle'>Current Employees</h1>
             <main>
-                <div className="searchContainer">
-                    <div className="searchBar">
-                        <div className="searchIcon">
-                            <img src={iconSearch} alt="icon search" width={18} height={18} />
+                <div className='searchContainerAndOptions'>
+                    <div className='searchContainer'>
+                        <div className="searchBar">
+                            <div className="searchIcon">
+                                <img src={iconSearch} alt="icon search" width={18} height={18} />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Search all columns"
+                                value={search}
+                                onChange={handleSearch}
+                                className="searchInput"
+                            />
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Search all columns"
-                            value={search}
-                            onChange={handleSearch}
-                            className="searchInput"
-                        />
+
+                        {showDepartmentSearch && (
+                            <div className="searchSelect">
+                                <select
+                                    name="department"
+                                    id="department"
+                                    value={departementFilter}
+                                    onChange={(e) => setDepartementFilter(e.target.value)}
+                                >
+                                    <option value="">Select Department</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Human Resources">Human Resources</option>
+                                    <option value="Legal">Legal</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {showStateSearch && (
+                            <div className="searchSelect">
+                                <select
+                                    name="state"
+                                    id="state"
+                                    value={stateFilter}
+                                    onChange={(e) => setStateFilter(e.target.value)}
+                                >
+                                    <option value="">Select State</option>
+                                    {states.map((state) => (
+                                        <option key={state.abbreviation} value={state.abbreviation}>
+                                            {state.abbreviation} - {state.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                     </div>
-                    {/* Affichage du + pour afficher le select de département */}
-                    {!showDepartmentSearch && !showStateSearch && (
-                        <div onClick={toggleDepartmentSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
-                            +
+                    {(filterStep < 2 || (showDepartmentSearch && showStateSearch)) && (
+                        <div className="searchControls" onClick={handleToggleFilterInputs}>
+                            {filterStep < 2 ?
+                                <img src={iconplus} alt="icon plus" width={32} height={32} />
+                                :
+                                <img src={iconminus} alt="icon minus" width={32} height={32} />
+                            }
                         </div>
                     )}
 
-                    {/* Affichage conditionnel du select de recherche de département */}
-                    {showDepartmentSearch && (
-                        <div className="searchDepartment">
-                            <select
-                                name="department"
-                                id="department"
-                                value={departementFilter}
-                                onChange={(e) => setDepartementFilter(e.target.value)}
-                            >
-                                <option value="">Select Department</option>
-                                <option value="Sales">Sales</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="Human Resources">Human Resources</option>
-                                <option value="Legal">Legal</option>
-                            </select>
-                        </div>
-                    )}
-
-                    {/* Affichage du + pour afficher le select d'état, uniquement après le département */}
-                    {showDepartmentSearch && !showStateSearch && (
-                        <div onClick={toggleStateSearch} style={{ cursor: 'pointer', fontSize: '24px' }}>
-                            +
-                        </div>
-                    )}
-
-                    {/* Affichage conditionnel du select de recherche d'état */}
-                    {showStateSearch && (
-                        <div className="searchState">
-                            <select
-                                name="state"
-                                id="state"
-                                value={stateFilter}
-                                onChange={(e) => setStateFilter(e.target.value)}
-                            >
-                                <option value="">Select State</option>
-                                {states.map((state) => (
-                                    <option key={state.abbreviation} value={state.abbreviation}>
-                                        {state.abbreviation} - {state.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-
-                    {/* Affichage du - pour cacher les deux inputs une fois qu'ils sont affichés */}
-                    {showDepartmentSearch && showStateSearch && (
-                        <div onClick={hideBothSearches} style={{ cursor: 'pointer', fontSize: '24px' }}>
-                            -
-                        </div>
-                    )}
                 </div>
                 <DataTable
                     className='customTable'

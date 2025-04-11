@@ -1,15 +1,42 @@
 @use './../../utils/style/variables.scss';
 
+.searchContainerAndOptions {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.searchControls {
+    min-width: 37px;
+    height: 37px;
+    align-content: center;
+    background-color: variables.$defaultBackgroundButton;
+    border-radius: 50%;
+    color: #ffffff;
+    align-self: flex-start;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:hover.searchControls {
+    background-color: variables.$defaultBackgroundButtonHover;
+}
+
 .searchContainer {
     display: flex;
     justify-content: end;
+    align-items: center;
+    gap: 20px;
 }
 
 .searchBar {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-
 
     .searchIcon {
         width: 35px;
@@ -46,7 +73,31 @@
         outline: none;
         height: 33px;
     }
+}
 
+.searchSelect {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    select {
+        width: 180px;
+        margin: 0;
+        padding: 0;
+        padding-left: 8px;
+        height: 37px;
+        border-radius: 8px;
+        border: 1px solid;
+        font-size: 14px;
+        border-color: variables.$defaultBackgroundButton;
+
+        &:focus {
+            border: 2px solid;
+            border-color: variables.$defaultBackgroundButton;
+            outline: none;
+            height: 37px;
+        }
+    }
 }
 
 .paginationInfo {
@@ -99,14 +150,15 @@
     .customTable .rdt_TableHeadRow {
         font-size: 14px;
     }
+
+    .searchContainer {
+        align-items: end;
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 599px) {
     .paginationInfo {
         display: block;
-    }
-
-    .searchContainer {
-        justify-content: center;
     }
 }
