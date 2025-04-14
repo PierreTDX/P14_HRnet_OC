@@ -67,18 +67,26 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
         }
     }, [windowWidth]);
 
+    const normalizeString = (str) => {
+        return str
+            .normalize("NFD")                // décompose les lettres accentuées
+            .replace(/[\u0300-\u036f]/g, "") // supprime les accents
+            .toLowerCase()                  // convertit en minuscules
+            .trim();                        // supprime les espaces en début/fin
+    };
+
     // Filtrage des employés
     const filteredData = employees.filter(item => {
-        // Vérifie que les valeurs de search, stateFilter et departmentFilter ne sont pas vides
-        const searchTerms = search.trim().toLowerCase().split(' ');
+        const searchTerms = normalizeString(search).split(' ');
+
         const matchesSearch = searchTerms.every(term =>
             Object.values(item).some(value =>
-                value.toString().toLowerCase().includes(term)
+                normalizeString(value.toString()).includes(term)
             )
         );
 
-        const matchesState = stateFilter.trim().toLowerCase() === '' || item.state.toLowerCase().includes(stateFilter.toLowerCase());
-        const matchesDep = departmentFilter.trim().toLowerCase() === '' || item.department.toLowerCase().includes(departmentFilter.toLowerCase());
+        const matchesState = normalizeString(item.state).includes(normalizeString(stateFilter));
+        const matchesDep = normalizeString(item.department).includes(normalizeString(departmentFilter));
 
         return matchesSearch && matchesState && matchesDep;
     });

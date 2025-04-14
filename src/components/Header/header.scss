@@ -24,40 +24,8 @@ header {
 .logo h1 {
     color: variables.$defaultTextColorLogo;
     font-weight: 500;
-    font-size: 48px;
+    font-size: 40px;
 }
-
-// .logo img {
-//     width: 100px;
-//     height: auto;
-// }
-
-nav {
-    display: flex;
-    gap: 20px;
-}
-
-.btn {
-    background-color: variables.$defaultBackgroundButton;
-    text-decoration: none;
-    font-weight: 700;
-    color: variables.$defaultTextColorButton;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-}
-
-:hover.btn {
-    background-color: variables.$defaultBackgroundButtonHover;
-}
-
-// .icon {
-//     width: 24px;
-//     height: auto;
-// }
 
 @container (max-width: 700px) {
 
@@ -68,20 +36,6 @@ nav {
 
     .logo h1 {
         font-size: 24px;
-    }
-
-    .btntext {
-        display: none;
-    }
-
-    .icon {
-        width: 16px;
-        height: 16px;
-    }
-
-    .btn {
-        border-radius: 50%;
-        padding: 10px;
     }
 }
 

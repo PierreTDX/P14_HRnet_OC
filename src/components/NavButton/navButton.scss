@@ -1,0 +1,41 @@
+@use './../../utils/style/variables.scss';
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    background-color: variables.$defaultBackgroundButton;
+    text-decoration: none;
+    font-weight: 700;
+    color: variables.$defaultTextColorButton;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+:hover.btn {
+    background-color: variables.$defaultBackgroundButtonHover;
+}
+
+@container (max-width: 700px) {
+
+    .btntext {
+        display: none;
+    }
+
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .btn {
+        border-radius: 50%;
+        padding: 10px;
+    }
+}
