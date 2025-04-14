@@ -1,0 +1,20 @@
+@use './../../utils/style/variables.scss';
+
+.searchControls {
+    min-width: 37px;
+    height: 37px;
+    align-content: center;
+    background-color: variables.$defaultBackgroundButton;
+    border-radius: 50%;
+    color: #ffffff;
+    align-self: flex-start;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:hover.searchControls {
+    background-color: variables.$defaultBackgroundButtonHover;
+}

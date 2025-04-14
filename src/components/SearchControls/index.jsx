@@ -1,6 +1,7 @@
 import React from 'react';
 import iconplus from '../../assets/img/plus.png';
 import iconminus from '../../assets/img/moins.png';
+import './searchControls.scss';
 
 const SearchControls = ({ filterStep, handleToggle }) => (
     <div className="searchControls" onClick={handleToggle}>

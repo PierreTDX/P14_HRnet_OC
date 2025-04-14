@@ -1,6 +1,8 @@
 import React from 'react';
 import { states } from '../../data/states';
 import { departments } from '../../data/departements';
+import ClearButton from '../ClearButton';
+import './selectFilter.scss';
 
 const SelectFilter = ({ type, value, onChange }) => {
     // Sélection des données selon le type
@@ -38,6 +40,8 @@ const SelectFilter = ({ type, value, onChange }) => {
                     </option>
                 ))}
             </select>
+
+            <ClearButton value={value} onChange={onChange} label="Clear filter" />
         </div>
     );
 };

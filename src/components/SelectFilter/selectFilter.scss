@@ -1,0 +1,33 @@
+@use './../../utils/style/variables.scss';
+
+
+.searchSelect {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+
+    select {
+        width: 180px;
+        margin: 0;
+        padding: 0;
+        padding-left: 8px;
+        padding-right: 26px;
+        height: 37px;
+        border-radius: 8px;
+        border: 1px solid;
+        font-size: 14px;
+        border-color: variables.$defaultBackgroundButton;
+
+        &:focus {
+            border: 2px solid;
+            border-color: variables.$defaultBackgroundButton;
+            outline: none;
+            height: 37px;
+        }
+    }
+
+    .clearButton {
+        right: 20px;
+    }
+}

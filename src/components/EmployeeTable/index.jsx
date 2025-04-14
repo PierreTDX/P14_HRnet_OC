@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
+import PaginationInfo from '../PaginationInfo';
 import { useNavigate } from 'react-router-dom';
+import './employeeTable.scss';
+
 
 createTheme('custom', {
     divider: {
@@ -8,7 +11,7 @@ createTheme('custom', {
     },
 });
 
-const EmployeeTable = ({ search, departmentFilter, stateFilter }) => {
+const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' }) => {
     const [employees, setEmployees] = useState([]);
     const [columns, setColumns] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -64,18 +67,18 @@ const EmployeeTable = ({ search, departmentFilter, stateFilter }) => {
         }
     }, [windowWidth]);
 
-    // Filtrage
+    // Filtrage des employés
     const filteredData = employees.filter(item => {
-        const searchTerms = search.toLowerCase().split(' ');
-
+        // Vérifie que les valeurs de search, stateFilter et departmentFilter ne sont pas vides
+        const searchTerms = search.trim().toLowerCase().split(' ');
         const matchesSearch = searchTerms.every(term =>
             Object.values(item).some(value =>
                 value.toString().toLowerCase().includes(term)
             )
         );
 
-        const matchesState = item.state.toLowerCase().includes(stateFilter.toLowerCase());
-        const matchesDep = item.department.toLowerCase().includes(departmentFilter.toLowerCase());
+        const matchesState = stateFilter.trim().toLowerCase() === '' || item.state.toLowerCase().includes(stateFilter.toLowerCase());
+        const matchesDep = departmentFilter.trim().toLowerCase() === '' || item.department.toLowerCase().includes(departmentFilter.toLowerCase());
 
         return matchesSearch && matchesState && matchesDep;
     });
@@ -87,9 +90,9 @@ const EmployeeTable = ({ search, departmentFilter, stateFilter }) => {
     return (
         <>
             <DataTable
-                className='customTable'
+                className="customTable"
                 columns={columns}
-                data={filteredData}
+                data={filteredData} // Utilisation des données filtrées
                 pagination
                 pointerOnHover
                 striped
@@ -97,6 +100,11 @@ const EmployeeTable = ({ search, departmentFilter, stateFilter }) => {
                 theme="custom"
                 onRowClicked={handleRowClicked}
                 persistTableHead
+            />
+
+            <PaginationInfo
+                filteredCount={filteredData.length} // Nombre d'éléments après filtre
+                totalCount={employees.length}        // Nombre total d'éléments
             />
         </>
     );
