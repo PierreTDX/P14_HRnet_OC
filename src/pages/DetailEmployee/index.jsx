@@ -16,11 +16,16 @@ const EmployeeDetail = () => {
             <main>
                 <p><strong>Fisrt Name :</strong> {employee.firstName}</p>
                 <p><strong>Last Name :</strong> {employee.lastName}</p>
-                <p><strong>Date of Birth :</strong> {employee.dateOfBirth}</p>
+                <p><strong>Birth Date :</strong> {employee.dateOfBirth}</p>
+                <br />
+                <p><strong>Street :</strong> {employee.street}</p>
+                <p><strong>City :</strong> {employee.city}</p>
+                <p><strong>State :</strong> {employee.state}</p>
+                <p><strong>Zip Code :</strong> {employee.zipCode}</p>
+                <br />
+                <p><strong>Star Date :</strong> {employee.startDate}</p>
                 <p><strong>Department :</strong> {employee.department}</p>
-                {/*ici les autres infos utiles */}
             </main>
-
         </>
     );
 };

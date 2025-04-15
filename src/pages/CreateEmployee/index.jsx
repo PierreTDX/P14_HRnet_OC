@@ -1,7 +1,7 @@
 import './createEmployee.scss'
 import { states } from '../../data/states'
 import { departments } from '../../data/departements'
-import { useCreateEmployee } from '../../hooks/useCreateEmployeeJquery'
+import { useCreateEmployee } from '../../hooks/useCreateEmployee'
 import { useForm } from 'react-hook-form'
 import { validateGenericName } from '../../validators/nameValidador'
 import { validateBirthDate } from '../../validators/birthDateValidator'
