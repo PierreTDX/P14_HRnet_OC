@@ -15,7 +15,7 @@ function Home() {
                     to="/createemployee"
                     icon={AddUser}
                     alt="icon add user"
-                    text="Create Employee"
+                    text="Add New Employee"
                     className="btnHome"
                 />
                 <NavButton
