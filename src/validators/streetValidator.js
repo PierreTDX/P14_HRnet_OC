@@ -9,7 +9,7 @@ export const validateStreet = (value) => {
     // Autoriser lettres, chiffres, espace, ponctuation standard
     const pattern = /^[\p{L}0-9\s.,'#-]+$/u;
     if (!pattern.test(street)) {
-        return "* Invalid characters in street address";
+        return "* invalid characters in street address";
     }
 
     return true;

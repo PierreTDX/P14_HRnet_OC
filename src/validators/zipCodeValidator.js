@@ -5,7 +5,7 @@ export const validateZipCode = (value) => {
     const isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode);
 
     if (!isValid) {
-        return "* Not valid, format must be 12345 or 12345-1234";
+        return "* format must be 12345 or 12345-1234";
     }
 
     return true;

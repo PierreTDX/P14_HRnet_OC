@@ -21,5 +21,5 @@ export function validateStartDate(startDate, birthDate) {
 
     // Vérifie que la date de début est au moins 12 ans après la date de naissance
     // Si ce n'est pas le cas, retourne un message d'erreur
-    return start >= birth || "Start date must be at least 12 years after birth date";
+    return start >= birth || "* must be at least 12 years after birth date";
 }
