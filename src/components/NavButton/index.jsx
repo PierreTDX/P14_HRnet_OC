@@ -1,11 +1,32 @@
 import { NavLink } from 'react-router-dom';
 import './navButton.scss';
 
-const NavButton = ({ to, icon, alt, text, className = '' }) => {
-    return (
-        <NavLink to={to} className={`btn ${className}`}>
-            <img width="24px" height="24px" src={icon} alt={alt} className="icon" title={text} />
+const NavButton = ({ to, icon, alt = '', text, className = '', type, onClick }) => {
+    const isButton = type === 'submit' || type === 'button';
+
+    const content = (
+        <>
+            {icon && (
+                <img
+                    width="24px"
+                    height="24px"
+                    src={icon}
+                    alt={alt}
+                    className="icon"
+                    title={text}
+                />
+            )}
             <span className="btntext">{text}</span>
+        </>
+    );
+
+    return isButton ? (
+        <button type={type} className={`btn ${className}`} onClick={onClick}>
+            {content}
+        </button>
+    ) : (
+        <NavLink to={to || '#'} className={`btn ${className}`} onClick={onClick}>
+            {content}
         </NavLink>
     );
 };

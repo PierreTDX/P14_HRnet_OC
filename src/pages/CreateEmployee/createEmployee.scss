@@ -1,10 +1,14 @@
 @use './../../utils/style/variables.scss';
 
+.formCreateEmployee {
+    align-content: center;
+}
+
 .pageTitle {
     text-align: center;
     background-color: variables.$defaultBackgroundTitle;
     padding: 5px;
-    font-size: 24px;
+    font-size: 18px;
     color: variables.$defaultTextColorTitle;
 }
 
@@ -13,37 +17,120 @@
     font-size: 14px;
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 .title {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+form {
+    background-color: rgb(245 245 244);
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 1px;
+}
+
+input,
+select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid;
+    font-size: 14px;
+    border-color: variables.$defaultBackgroundButton;
+
+    &:focus {
+        border: 2px solid;
+        border-color: variables.$defaultBackgroundButton;
+        outline: none;
+    }
+}
+
+fieldset {
+    margin-top: 20px;
+    margin-inline: 30px;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid #0000008A;
+}
+
+legend {
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #0000008B;
 }
 
 label {
     display: block;
-    margin-top: 1rem;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 1px;
 }
 
-.address {
-    margin-top: 10px;
-}
-
-.center {
+.containerBtn {
     display: flex;
-    margin: auto;
-    margin-top: 16px;
+    margin-inline: 30px;
+    gap: 20px;
+    justify-content: end;
+    flex-direction: row-reverse;
+    margin-block: 20px;
 }
 
-@media (max-width: 740px) {
+@media (min-width: 741px) {
     .pageTitle {
-        font-size: 18px;
+        font-size: 24px;
+    }
+
+    label,
+    legend {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 741px) {
+    .containerForm {
+        display: flex;
+        flex-wrap: wrap;
+
+        label {
+            margin-top: 20px;
+        }
+    }
+
+    .containerForm>* {
+        flex: 1 1 20%;
+    }
+
+    .containerForm> :nth-child(3) {
+        flex: 1 1 100%;
+    }
+
+    .containerFormInternalInfo {
+        display: flex;
+        justify-content: space-between;
+        gap: 60px;
+
+        .containerInputInternalInfo {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .containerForm> :nth-child(3) {
+        flex: 1 1 20%;
+    }
+
+    .containerFormInternalInfo {
+        flex-direction: column;
+        gap: 0;
     }
 }
