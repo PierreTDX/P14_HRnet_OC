@@ -23,7 +23,7 @@ const EmployeeDetail = () => {
                 <p><strong>State :</strong> {employee.state}</p>
                 <p><strong>Zip Code :</strong> {employee.zipCode}</p>
                 <br />
-                <p><strong>Star Date :</strong> {employee.startDate}</p>
+                <p><strong>Start Date :</strong> {employee.startDate}</p>
                 <p><strong>Department :</strong> {employee.department}</p>
             </main>
         </>
