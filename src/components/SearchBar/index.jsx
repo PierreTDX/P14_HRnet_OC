@@ -4,7 +4,7 @@ import ClearButton from '../ClearButton';
 import './searchBar.scss';
 
 
-const SearchBar = ({ value, onChange }) => {
+const SearchBar = ({ value, onChange, onClear }) => {
 
     return (
         <div className="searchBar">
@@ -18,7 +18,7 @@ const SearchBar = ({ value, onChange }) => {
                 onChange={onChange}
                 className="searchInput"
             />
-            <ClearButton value={value} onChange={onChange} label="Clear search" />
+            <ClearButton value={value} onChange={onClear} label="Clear search" />
         </div>
     );
 };

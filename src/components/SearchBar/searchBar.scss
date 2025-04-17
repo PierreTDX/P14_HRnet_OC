@@ -5,6 +5,11 @@
     align-items: center;
     position: relative;
 
+    .clearButton {
+        position: absolute;
+        right: 8px;
+    }
+
     .searchIcon {
         width: 32px;
         height: 32px;

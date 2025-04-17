@@ -33,6 +33,10 @@ const ListEmployees = () => {
         setSearch(event.target.value);
     };
 
+    const handleClearSearch = () => {
+        setSearch(''); // Réinitialiser la valeur de recherche
+    };
+
     const handleToggleFilterInputs = () => {
         if (filterStep === 0) {
             setShowDepartmentSearch(true);
@@ -56,7 +60,7 @@ const ListEmployees = () => {
             <main>
                 <div className='searchContainerAndOptions'>
                     <div className='searchContainer'>
-                        <SearchBar value={search} onChange={handleSearch} />
+                        <SearchBar value={search} onChange={handleSearch} onClear={handleClearSearch} />
 
                         {showDepartmentSearch && (
                             <SelectInput

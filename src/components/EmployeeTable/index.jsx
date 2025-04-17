@@ -36,11 +36,29 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
         return new Date(`${year}-${month}-${day}`).toISOString();
     };
 
+
     // Définir dynamiquement les colonnes en fonction de la taille de l’écran
     useEffect(() => {
+
+        // Fonction de comparaison des chaînes en ignorant les accents
+        const compareStringIgnoreAccent = (a, b) => {
+            const normalizedA = normalizeString(a);
+            const normalizedB = normalizeString(b);
+            return normalizedA.localeCompare(normalizedB);
+        };
+
+        // Fonction dynamique de tri
+        const sortByFieldIgnoreAccent = (field) => (a, b) =>
+            compareStringIgnoreAccent(a[field], b[field]);
+
         const baseColumns = [
-            { name: 'First Name', selector: row => row.firstName, sortable: true },
-            { name: 'Last Name', selector: row => row.lastName, sortable: true },
+            {
+                name: 'First Name',
+                selector: row => row.firstName,
+                sortable: true,
+                sortFunction: sortByFieldIgnoreAccent('firstName')
+            },
+            { name: 'Last Name', selector: row => row.lastName, sortable: true, sortFunction: sortByFieldIgnoreAccent('lastName') },
         ];
 
         if (windowWidth <= 425) {
@@ -49,32 +67,33 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
             setColumns([
                 ...baseColumns,
                 { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
-                { name: 'Department', selector: row => row.department, sortable: true },
+                { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
             ]);
         } else if (windowWidth <= 1024) {
             setColumns([
                 ...baseColumns,
                 { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
-                { name: 'Department', selector: row => row.department, sortable: true },
-                { name: 'Street', selector: row => row.street, sortable: true },
-                { name: 'City', selector: row => row.city, sortable: true },
+                { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
+                { name: 'Street', selector: row => row.street, sortable: true, sortFunction: sortByFieldIgnoreAccent('street') },
+                { name: 'City', selector: row => row.city, sortable: true, sortFunction: sortByFieldIgnoreAccent('city') },
             ]);
         } else {
             setColumns([
                 ...baseColumns,
                 { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
-                { name: 'Department', selector: row => row.department, sortable: true },
+                { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
                 { name: 'Date of Birth', selector: row => new Date(formatDate(row.dateOfBirth)), sortable: true, format: row => new Date(formatDate(row.dateOfBirth)).toLocaleDateString() },
-                { name: 'Street', selector: row => row.street, sortable: true },
-                { name: 'City', selector: row => row.city, sortable: true },
-                { name: 'State', selector: row => row.state, sortable: true, width: '90px' },
+                { name: 'Street', selector: row => row.street, sortable: true, sortFunction: sortByFieldIgnoreAccent('street') },
+                { name: 'City', selector: row => row.city, sortable: true, sortFunction: sortByFieldIgnoreAccent('city') },
+                { name: 'State', selector: row => row.state, sortable: true, width: '90px', sortFunction: sortByFieldIgnoreAccent('state') },
                 { name: 'Zip Code', selector: row => row.zipCode, sortable: true, width: '118px' },
             ]);
         }
     }, [windowWidth]);
 
     const normalizeString = (str) => {
-        return str
+        return (str || '')
+            .toString()
             .normalize("NFD")                // décompose les lettres accentuées
             .replace(/[\u0300-\u036f]/g, "") // supprime les accents
             .toLowerCase()                  // convertit en minuscules
@@ -87,7 +106,7 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
 
         const matchesSearch = searchTerms.every(term =>
             Object.values(item).some(value =>
-                normalizeString(value.toString()).includes(term)
+                normalizeString(value).includes(term)
             )
         );
 
