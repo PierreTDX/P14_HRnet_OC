@@ -4,6 +4,7 @@ import { departments } from '../../data/departements'
 import { useCreateEmployee } from '../../hooks/useCreateEmployee'
 import { useForm } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
+import SelectInput from '../../components/SelectInput'
 import { validateGenericName } from '../../validators/nameValidador'
 import { validateBirthDate } from '../../validators/birthDateValidator'
 import { validateZipCode } from '../../validators/zipCodeValidator'
@@ -12,7 +13,7 @@ import { validateStartDate } from '../../validators/startDateValidator'
 import { formatName, formatStringName, trimFieldValue } from '../../validators/sanitizeTrimmedInput'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, control } = useForm()
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = watch("dateOfBirth");
 
@@ -199,20 +200,14 @@ function CreateEmployee() {
 
                             {/* State */}
                             <label htmlFor="state">State</label>
-                            <select
-                                id="state"
+                            <SelectInput
                                 name="state"
-                                {...register("state", registerOptions.state)}
-                                aria-invalid={errors.state ? "true" : "false"}
-                                aria-describedby="stateError"
-                            >
-                                <option value="">Select a state</option>
-                                {states.map((state) => (
-                                    <option key={state.abbreviation} value={state.abbreviation}>
-                                        {state.name}
-                                    </option>
-                                ))}
-                            </select>
+                                control={control}
+                                options={states.map(state => ({ value: state.abbreviation, label: state.name }))}
+                                placeholder="Select a state"
+                                rules={registerOptions.state}
+                                error={errors.state}
+                            />
                             <p
                                 id="stateError"
                                 role="alert"
@@ -274,20 +269,14 @@ function CreateEmployee() {
                                 <div className='containerInputInternalInfo'>
                                     {/* Department */}
                                     <label htmlFor="department">Department</label>
-                                    <select
-                                        id="department"
+                                    <SelectInput
                                         name="department"
-                                        {...register("department", registerOptions.department)}
-                                        aria-invalid={errors.department ? "true" : "false"}
-                                        aria-describedby="departmentError"
-                                    >
-                                        <option value="">Select a department</option>
-                                        {departments.map((department) => (
-                                            <option key={department.name} value={department.name}>
-                                                {department.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        control={control}
+                                        options={departments.map(dep => ({ value: dep.name, label: dep.name }))}
+                                        placeholder="Select a department"
+                                        rules={registerOptions.department}
+                                        error={errors.department}
+                                    />
                                     <p
                                         id="departmentError"
                                         role="alert"

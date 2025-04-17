@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import SearchBar from '../../components/SearchBar';
-import SelectFilter from '../../components/SelectFilter';
+import SelectInput from '../../components/SelectInput';
 import SearchControls from '../../components/SearchControls';
 import EmployeeTable from '../../components/EmployeeTable';
+import { states } from '../../data/states'
+import { departments } from '../../data/departements'
 import './listEmployees.scss';
 
 const ListEmployees = () => {
@@ -11,8 +13,21 @@ const ListEmployees = () => {
     const [stateFilter, setStateFilter] = useState('');
     const [filterStep, setFilterStep] = useState(0); // 0: rien, 1: department, 2: state
 
+
     const [showDepartmentSearch, setShowDepartmentSearch] = useState(false);
     const [showStateSearch, setShowStateSearch] = useState(false);
+
+    // Définir les options pour l'état
+    const stateOptions = states.map(state => ({
+        value: state.abbreviation,
+        label: state.name,
+    }));
+
+    // Définir les options pour department
+    const departmentOptions = departments.map(dep => ({
+        value: dep.name,
+        label: dep.name,
+    }));
 
     const handleSearch = (event) => {
         setSearch(event.target.value);
@@ -44,18 +59,22 @@ const ListEmployees = () => {
                         <SearchBar value={search} onChange={handleSearch} />
 
                         {showDepartmentSearch && (
-                            <SelectFilter
-                                type="department"
+                            <SelectInput
+                                name="department"
+                                options={departmentOptions}
+                                placeholder="Select a department"
                                 value={departementFilter}
-                                onChange={(e) => setDepartementFilter(e.target.value)}
+                                onChange={(val) => setDepartementFilter(val)}
                             />
                         )}
 
                         {showStateSearch && (
-                            <SelectFilter
-                                type="state"
+                            <SelectInput
+                                name="state"
+                                options={stateOptions}
+                                placeholder="Select a state"
                                 value={stateFilter}
-                                onChange={(e) => setStateFilter(e.target.value)}
+                                onChange={(val) => setStateFilter(val)}
                             />
                         )}
                     </div>

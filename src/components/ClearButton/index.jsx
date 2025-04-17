@@ -5,7 +5,7 @@ const ClearButton = ({ value, onChange, label = 'Clear' }) => {
     if (!value) return null;
 
     const handleClear = () => {
-        onChange({ target: { value: '' } });
+        onChange('');
     };
 
     return (
