@@ -4,9 +4,12 @@
     width: 100%;
 }
 
+.react-datepicker-popper {
+    z-index: 10;
+}
+
 .date-input-wrapper {
     position: relative;
-    z-index: 10;
 
     .clearButton {
         position: absolute;
