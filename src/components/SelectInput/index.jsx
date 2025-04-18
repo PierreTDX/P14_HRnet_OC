@@ -64,25 +64,31 @@ function SelectInput({ name, control, options, placeholder, rules, value, onChan
                     control={control}
                     rules={rules}
                     render={({ field }) => (
-                        <Select
-                            {...field}
-                            options={sortedOptions}
-                            styles={customStyles}
-                            placeholder={placeholder}
-                            isSearchable
-                            value={sortedOptions.find(option => option.value === field.value) || null}
-                            onChange={val => field.onChange(val.value)}
-                            classNamePrefix="selectInput"
-                            className="selectInput-container"
-                        />
+                        < >
+                            <div className="selectInput-wrapper">
+                                <Select
+                                    {...field}
+                                    options={sortedOptions}
+                                    styles={customStyles}
+                                    placeholder={placeholder}
+                                    isSearchable
+                                    value={sortedOptions.find(option => option.value === field.value) || null}
+                                    onChange={val => field.onChange(val.value)}
+                                    classNamePrefix="selectInput"
+                                    className="selectInput-container"
+                                />
+                                <ClearButton value={field.value} onChange={() => field.onChange('')} label="Clear filter" />
+                            </div>
+                        </>
                     )}
                 />
+
             </div>
         );
     }
 
     return (
-        <div className="searchSelect">
+        <div className="selectInput-wrapper">
             <Select
                 name={name}
                 options={sortedOptions}
@@ -92,7 +98,7 @@ function SelectInput({ name, control, options, placeholder, rules, value, onChan
                 value={selectedOption}
                 onChange={val => onChange(val ? val.value : '')}
                 classNamePrefix="selectInput"
-                className="selectInput-container"
+                className="selectInputSearch-container"
                 getOptionLabel={
                     name === 'state'
                         ? (e) => `${e.value} - ${e.label}`

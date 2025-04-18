@@ -1,0 +1,53 @@
+@use './../../utils/style/variables.scss';
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.date-input-wrapper {
+    position: relative;
+
+    .clearButton {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+    }
+}
+
+.react-datepicker__input-container {}
+
+.react-datepicker__header {
+    background-color: variables.$defaultBackgroundButton !important; // couleur de fond personnalisée
+    color: #fff; // couleur du texte (mois, année)
+    border-bottom: none; // optionnel : retirer la bordure
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+.react-datepicker__current-month {
+    margin-bottom: 8px !important;
+}
+
+.react-datepicker__navigation-icon::before {
+    border-color: white !important; // change la couleur du chevron
+}
+
+.react-datepicker__triangle {
+    color: variables.$defaultBackgroundButton !important;
+    fill: variables.$defaultBackgroundButton !important
+}
+
+.react-datepicker__day--selected {
+    background-color: variables.$defaultBackgroundButton !important; // ou la couleur de ton choix
+    color: white !important; // pour le texte du jour sélectionné
+}
+
+.react-datepicker__day--keyboard-selected {
+    background-color: hsl(70.47deg 75.63% 60%); // une teinte plus foncée au survol
+
+}
+
+.react-datepicker__day:hover {
+    background-color: hsl(70.47deg 75.63% 80%) !important; // exemple : orange si sélectionné ET aujourd’hui
+    color: black !important;
+}

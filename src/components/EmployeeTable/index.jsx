@@ -30,13 +30,6 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Fonction pour convertir les dates en format ISO
-    const formatDate = (dateStr) => {
-        const [month, day, year] = dateStr.split('/');
-        return new Date(`${year}-${month}-${day}`).toISOString();
-    };
-
-
     // Définir dynamiquement les colonnes en fonction de la taille de l’écran
     useEffect(() => {
 
@@ -66,13 +59,13 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
         } else if (windowWidth <= 768) {
             setColumns([
                 ...baseColumns,
-                { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
+                { name: 'Start Date', selector: row => row.startDate, sortable: true, sortFunction: (a, b) => new Date(a.startDate) - new Date(b.startDate) },
                 { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
             ]);
         } else if (windowWidth <= 1024) {
             setColumns([
                 ...baseColumns,
-                { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
+                { name: 'Start Date', selector: row => row.startDate, sortable: true, sortFunction: (a, b) => new Date(a.startDate) - new Date(b.startDate) },
                 { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
                 { name: 'Street', selector: row => row.street, sortable: true, sortFunction: sortByFieldIgnoreAccent('street') },
                 { name: 'City', selector: row => row.city, sortable: true, sortFunction: sortByFieldIgnoreAccent('city') },
@@ -80,9 +73,9 @@ const EmployeeTable = ({ search = '', departmentFilter = '', stateFilter = '' })
         } else {
             setColumns([
                 ...baseColumns,
-                { name: 'Start Date', selector: row => new Date(formatDate(row.startDate)), sortable: true, format: row => new Date(formatDate(row.startDate)).toLocaleDateString() },
+                { name: 'Start Date', selector: row => row.startDate, sortable: true, sortFunction: (a, b) => new Date(a.startDate) - new Date(b.startDate) },
                 { name: 'Department', selector: row => row.department, sortable: true, sortFunction: sortByFieldIgnoreAccent('department') },
-                { name: 'Date of Birth', selector: row => new Date(formatDate(row.dateOfBirth)), sortable: true, format: row => new Date(formatDate(row.dateOfBirth)).toLocaleDateString() },
+                { name: 'Date of Birth', selector: row => row.dateOfBirth, sortable: true, sortFunction: (a, b) => new Date(a.dateOfBirth) - new Date(b.dateOfBirth) },
                 { name: 'Street', selector: row => row.street, sortable: true, sortFunction: sortByFieldIgnoreAccent('street') },
                 { name: 'City', selector: row => row.city, sortable: true, sortFunction: sortByFieldIgnoreAccent('city') },
                 { name: 'State', selector: row => row.state, sortable: true, width: '90px', sortFunction: sortByFieldIgnoreAccent('state') },

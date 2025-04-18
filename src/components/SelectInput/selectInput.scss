@@ -3,13 +3,18 @@
 
 .selectInput-container {
     width: 100%;
+    position: relative;
 }
 
-.searchSelect {
+.selectInputSearch-container {
+    width: 210px;
+    position: relative;
+}
+
+.selectInput-wrapper {
     display: flex;
     align-items: center;
     gap: 20px;
-    width: 210px;
     position: relative;
 
     select {

@@ -5,6 +5,7 @@ import { useCreateEmployee } from '../../hooks/useCreateEmployee'
 import { useForm } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
 import SelectInput from '../../components/SelectInput'
+import DateInput from '../../components/DateInput'
 import { validateGenericName } from '../../validators/nameValidador'
 import { validateBirthDate } from '../../validators/birthDateValidator'
 import { validateZipCode } from '../../validators/zipCodeValidator'
@@ -18,8 +19,12 @@ function CreateEmployee() {
     const dateOfBirth = watch("dateOfBirth");
 
 
-    const formatToMMDDYYYY = (isoDate) => {
-        const [year, month, day] = isoDate.split("-");
+    const formatToMMDDYYYY = (dateObj) => {
+        if (!dateObj || isNaN(new Date(dateObj))) return '';
+        const date = new Date(dateObj);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
         return `${month}/${day}/${year}`;
     };
 
@@ -133,15 +138,12 @@ function CreateEmployee() {
 
                             {/* Birth Date */}
                             <label htmlFor="dateOfBirth">Birth Date</label>
-                            <input
-                                type="date"
-                                id="dateOfBirth"
+                            <DateInput
                                 name="dateOfBirth"
-                                max={new Date().toISOString().split("T")[0]} // Pas de date après aujourd'hui
-                                min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split("T")[0]} // Pas de date plus vieille que 100 ans
-                                {...register("dateOfBirth", registerOptions.dateOfBirth)}
-                                aria-invalid={errors.dateOfBirth ? "true" : "false"}
-                                aria-describedby="dateOfBirthError"
+                                control={control}
+                                rules={registerOptions.dateOfBirth}
+                                maxDate={new Date()} // aujourd'hui
+                                minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 100))}
                             />
                             <p
                                 id="dateOfBirthError"
@@ -245,15 +247,13 @@ function CreateEmployee() {
                                 <div className='containerInputInternalInfo'>
                                     {/* Start Date */}
                                     <label htmlFor="startDate">Start Date</label>
-                                    <input
-                                        type="date"
-                                        id="startDate"
+                                    <DateInput
                                         name="startDate"
-                                        min={new Date(new Date().setFullYear(new Date().getFullYear() - 80)).toISOString().split("T")[0]} // Aujourd'hui - 80 ans
-                                        max={new Date(new Date().setFullYear(new Date().getFullYear() + 10)).toISOString().split("T")[0]} // Aujourd'hui + 10 ans                              
-                                        {...register("startDate", registerOptions.startDate)}
-                                        aria-invalid={errors.startDate ? "true" : "false"}
-                                        aria-describedby="startDateError"
+                                        label="Start Date"
+                                        control={control}
+                                        rules={registerOptions.startDate}
+                                        minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 80))}
+                                        maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 10))}
                                     />
                                     <p
                                         id="startDateError"
