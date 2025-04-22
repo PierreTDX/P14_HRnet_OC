@@ -77,7 +77,7 @@ function SelectInput({ name, control, options, placeholder, rules, value, onChan
                                     classNamePrefix="selectInput"
                                     className="selectInput-container"
                                 />
-                                <ClearButton value={field.value} onChange={() => field.onChange('')} label="Clear filter" />
+                                <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear filter" />
                             </div>
                         </>
                     )}

@@ -1,4 +1,5 @@
 import './createEmployee.scss'
+import { useState, useEffect } from 'react'
 import { states } from '../../data/states'
 import { departments } from '../../data/departements'
 import { useCreateEmployee } from '../../hooks/useCreateEmployee'
@@ -6,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
 import SelectInput from '../../components/SelectInput'
 import DateInput from '../../components/DateInput'
+import Modal from '../../components/Modal'
 import { validateGenericName } from '../../validators/nameValidador'
 import { validateBirthDate } from '../../validators/birthDateValidator'
 import { validateZipCode } from '../../validators/zipCodeValidator'
@@ -14,10 +16,30 @@ import { validateStartDate } from '../../validators/startDateValidator'
 import { formatName, formatStringName, trimFieldValue } from '../../validators/sanitizeTrimmedInput'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, control } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, control } = useForm({ mode: "onBlur" })
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = watch("dateOfBirth");
 
+    const [showSaveModal, setshowSaveModal] = useState(false)
+    const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
+    const [isFormEmpty, setIsFormEmpty] = useState(true);
+
+
+    // Observer les valeurs du formulaire
+    const formValues = watch();
+
+    // useEffect pour mettre à jour isFormEmpty chaque fois que formValues change
+    useEffect(() => {
+        console.log("🚀 ~ useEffect ~ formValues:", formValues)
+        const isEmpty = !Object.values(formValues).some(value => value !== '');
+        setIsFormEmpty(isEmpty);
+    }, [formValues]); // Recalcule isFormEmpty chaque fois que formValues change
+
+    // Fonction de confirmation de Clear
+    const handleConfirmClear = () => {
+        reset(); // Reset le formulaire
+        setShowClearConfirmModal(false); // Ferme la modal
+    };
 
     const formatToMMDDYYYY = (dateObj) => {
         if (!dateObj || isNaN(new Date(dateObj))) return '';
@@ -28,6 +50,7 @@ function CreateEmployee() {
         return `${month}/${day}/${year}`;
     };
 
+    // Fonction onSubmit
     const onSubmit = (data) => {
         const formattedData = {
             ...data,
@@ -40,11 +63,12 @@ function CreateEmployee() {
             startDate: formatToMMDDYYYY(data.startDate),
         };
 
-
-        saveEmployee(formattedData);
+        saveEmployee(formattedData); // Envoi de la donnée à l'API ou à la base
+        setshowSaveModal(true) // Affiche la modal de confirmation
         console.log(formattedData);
 
         reset();
+
     };
 
     const registerOptions = {
@@ -299,18 +323,36 @@ function CreateEmployee() {
                             className="btnForm"
                         />
 
-                        {/* Clear Button */}
-                        <NavButton
-                            text="Clear"
-                            className="btnForm btnClear"
-                            onClick={() => reset()}
-                        />
+                        {/* Clear Button, only shown if form is not empty */}
+                        {(!isFormEmpty || Object.keys(errors).length > 0) && (
+                            <NavButton
+                                type="button"
+                                text="Clear"
+                                className="btnForm btnClear"
+                                onClick={() => setShowClearConfirmModal(true)}
+                            />
+                        )}
                     </div>
                 </form >
 
-                <div id="confirmation" className="modal">
-                    Employee Created!
-                </div>
+                <Modal
+                    isOpen={showSaveModal}
+                    onClose={() => setshowSaveModal(false)}
+                    title="Confirmation"
+                    showFooter={false}
+                    content="Employee Created!"
+                />
+
+                <Modal
+                    isOpen={showClearConfirmModal}
+                    onClose={() => setShowClearConfirmModal(false)}
+                    onConfirm={handleConfirmClear}
+                    title="Confirmation"
+                    confirmText="Yes"
+                    showFooter={true}
+                    content="Are you sure to clear the form"
+                />
+
             </main >
         </>
     )

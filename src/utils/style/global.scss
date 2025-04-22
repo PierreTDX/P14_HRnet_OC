@@ -1,6 +1,7 @@
 @use './variables.scss';
 
-body {
+body,
+button {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     margin: 0;

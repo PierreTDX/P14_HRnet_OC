@@ -25,8 +25,6 @@ function DateInput({ name, control, rules, minDate, maxDate }) {
             control={control}
             rules={rules}
             render={({ field }) => {
-                const handleClear = () => field.onChange(null);
-
                 return (
                     <div className="date-input-wrapper">
                         <DatePicker
@@ -41,10 +39,10 @@ function DateInput({ name, control, rules, minDate, maxDate }) {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            ref={field.ref}
+                            onBlur={field.onBlur}
                         />
                         {field.value && (
-                            <ClearButton value={field.value} onChange={handleClear} label="Clear" />
+                            <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
                         )}
                     </div>
                 );
