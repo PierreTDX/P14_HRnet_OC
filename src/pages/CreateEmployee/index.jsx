@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { states } from '../../data/states'
 import { departments } from '../../data/departements'
 import { useCreateEmployee } from '../../hooks/useCreateEmployee'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
 import SelectInput from '../../components/SelectInput'
 import DateInput from '../../components/DateInput'
@@ -16,23 +16,32 @@ import { validateStartDate } from '../../validators/startDateValidator'
 import { formatName, formatStringName, trimFieldValue } from '../../validators/sanitizeTrimmedInput'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, control } = useForm({ mode: "onBlur" })
+    const { register, handleSubmit, formState: { errors }, setValue, reset, control } = useForm({ mode: "onBlur" })
     const { saveEmployee } = useCreateEmployee()
-    const dateOfBirth = watch("dateOfBirth");
+    const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
     const [showSaveModal, setshowSaveModal] = useState(false)
     const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
     const [isFormEmpty, setIsFormEmpty] = useState(true);
 
 
-    // Observer les valeurs du formulaire
-    const formValues = watch();
+    // Observer les valeurs du formulaire avec useWatch
+    const formValues = useWatch({ control });
 
     // useEffect pour mettre à jour isFormEmpty chaque fois que formValues change
     useEffect(() => {
-        console.log("🚀 ~ useEffect ~ formValues:", formValues)
-        const isEmpty = !Object.values(formValues).some(value => value !== '');
-        setIsFormEmpty(isEmpty);
+        const isEmpty = !Object.values(formValues).some(value => {
+            if (typeof value === 'string') return value.trim() !== '';
+            if (typeof value === 'object' && value !== null) return Object.keys(value).length > 0;
+            return !!value;
+        });
+
+        // Ajout d'une vérification pour les dates
+        const hasDates = formValues.dateOfBirth || formValues.startDate;
+
+        // Si le formulaire est vide ou que seules les dates sont présentes, afficher Clear
+        setIsFormEmpty(isEmpty && !hasDates);
+
     }, [formValues]); // Recalcule isFormEmpty chaque fois que formValues change
 
     // Fonction de confirmation de Clear
