@@ -16,7 +16,7 @@ import { validateStartDate } from '../../validators/startDateValidator'
 import { formatName, formatStringName, trimFieldValue } from '../../validators/sanitizeTrimmedInput'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, control } = useForm({ mode: "onBlur" })
+    const { register, handleSubmit, formState: { errors }, setValue, reset, control } = useForm({ mode: "all" })
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
