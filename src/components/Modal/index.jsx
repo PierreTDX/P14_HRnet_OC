@@ -11,7 +11,7 @@ const Modal = ({
     width = '400px', // Largeur de la modale
     confirmText = 'OK', // Texte du bouton de confirmation
     cancelText = 'Cancel', // Texte du bouton d'annulation
-    showFooter = 'true', // Décide si le pied de page avec les boutons doit être affiché
+    showFooter = true, // Décide si le pied de page avec les boutons doit être affiché
     className = 'modal-wrapper' // Classe personnalisée pour la modale
 }) => {
 
@@ -50,6 +50,7 @@ const Modal = ({
         const html = document.documentElement;
 
         if (isOpen) {
+            console.log("🚀 ~ useEffect ~ isOpen:", isOpen)
 
             // Désactive le défilement
             html.style.overflow = 'hidden';
@@ -79,8 +80,7 @@ const Modal = ({
         } else {
             // Lorsque la modale se ferme, on active l'animation de fermeture et on arrête le rendu après 300ms
             setAnimationOut(true);
-            // Réactive le défilement après la fermeture de la modale
-            html.style.overflow = '';
+
             const timeout = setTimeout(() => {
                 setShouldRender(false);
             }, 300);
@@ -101,7 +101,15 @@ const Modal = ({
 
         // Écouteur d'événements sur le clavier
         document.addEventListener('keydown', handleKeydown);
-        return () => document.removeEventListener('keydown', handleKeydown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeydown);
+            // Réactivation du défilement quand toutes les modales sont fermées
+            const activeModals = document.querySelectorAll('.modal-wrapper');
+            if (activeModals.length === 0) {
+                html.style.overflow = '';
+            }
+        };
 
     }, [isOpen, onClose, showFooter]);
 
