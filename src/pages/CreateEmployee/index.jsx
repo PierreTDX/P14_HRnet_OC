@@ -1,48 +1,30 @@
 import './createEmployee.scss'
-import { useState, useEffect } from 'react'
-import { states } from '../../data/states'
-import { departments } from '../../data/departements'
-import { useCreateEmployee } from '../../hooks/useCreateEmployee'
+import { useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
-import SelectInput from '../../components/SelectInput'
-import DateInput from '../../components/DateInput'
 import Modal from '../../components/Modal'
-import { validateGenericName } from '../../validators/nameValidador'
-import { validateBirthDate } from '../../validators/birthDateValidator'
-import { validateZipCode } from '../../validators/zipCodeValidator'
-import { validateStreet } from '../../validators/streetValidator'
-import { validateStartDate } from '../../validators/startDateValidator'
-import { formatName, formatStringName, trimFieldValue } from '../../validators/sanitizeTrimmedInput'
+import { useCreateEmployee } from '../../utils/hooks/useCreateEmployee'
+import { useFormIsEmpty } from '../../utils/hooks/useFormIsEmpty'
+import { formatEmployeeData } from '../../utils/tools/employeeFormatters'
+import PersonalInfoSection from '../../components/FormSections/PersonalInfoSection'
+import AddressSection from '../../components/FormSections/AddressSection'
+import InternalInfoSection from '../../components/FormSections/InternalInfoSection'
+import { getRegisterOptions } from '../../components/FormSections/formConfig'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, control } = useForm({ mode: "all" })
+    const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm({ mode: "all" })
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
     const [showSaveModal, setShowSaveModal] = useState(false)
     const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
-    const [isFormEmpty, setIsFormEmpty] = useState(true);
-
+    const [saveModalContent, setSaveModalContent] = useState("Employee Created!");
 
     // Observer les valeurs du formulaire avec useWatch
     const formValues = useWatch({ control });
 
     // useEffect pour mettre à jour isFormEmpty chaque fois que formValues change
-    useEffect(() => {
-        const isEmpty = !Object.values(formValues).some(value => {
-            if (typeof value === 'string') return value.trim() !== '';
-            if (typeof value === 'object' && value !== null) return Object.keys(value).length > 0;
-            return !!value;
-        });
-
-        // Ajout d'une vérification pour les dates
-        const hasDates = formValues.dateOfBirth || formValues.startDate;
-
-        // Si le formulaire est vide ou que seules les dates sont présentes, afficher Clear
-        setIsFormEmpty(isEmpty && !hasDates);
-
-    }, [formValues]); // Recalcule isFormEmpty chaque fois que formValues change
+    const isFormEmpty = useFormIsEmpty(formValues);
 
     // Fonction de confirmation de Clear
     const handleConfirmClear = () => {
@@ -50,72 +32,20 @@ function CreateEmployee() {
         setShowClearConfirmModal(false); // Ferme la modal
     };
 
-    const formatToMMDDYYYY = (dateObj) => {
-        if (!dateObj || isNaN(new Date(dateObj))) return '';
-        const date = new Date(dateObj);
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${month}/${day}/${year}`;
-    };
-
     // Fonction onSubmit
     const onSubmit = (data) => {
-        const formattedData = {
-            ...data,
-            firstName: formatStringName(data.firstName),
-            lastName: formatStringName(data.lastName),
-            street: formatStringName(data.street),
-            city: formatStringName(data.city),
-            zipCode: data.zipCode.trim(),
-            dateOfBirth: formatToMMDDYYYY(data.dateOfBirth),
-            startDate: formatToMMDDYYYY(data.startDate),
-        };
+
+        const formattedData = formatEmployeeData(data);
 
         saveEmployee(formattedData); // Envoi de la donnée à l'API ou à la base
+        setSaveModalContent(`Employee ${formattedData.firstName} ${formattedData.lastName} Created!`);
         setShowSaveModal(true) // Affiche la modal de confirmation
         console.log(formattedData);
 
         reset();
-
     };
 
-    const registerOptions = {
-        firstName: {
-            required: "* First name is required",
-            validate: validateGenericName,
-        },
-        lastName: {
-            required: "* Last name is required",
-            validate: validateGenericName,
-        },
-        dateOfBirth: {
-            required: "* Birth date is required",
-            validate: validateBirthDate,
-        },
-        zipCode: {
-            required: "* Zip code is required",
-            validate: validateZipCode,
-        },
-        department: {
-            required: "* Department is required",
-        },
-        street: {
-            required: "* Street is required",
-            validate: validateStreet,
-        },
-        city: {
-            required: "* City is required",
-            validate: validateGenericName,
-        },
-        state: {
-            required: "* State is required",
-        },
-        startDate: {
-            required: "* Start date is required",
-            validate: (value) => validateStartDate(value, dateOfBirth),
-        },
-    }
+    const registerOptions = getRegisterOptions(dateOfBirth);
 
     return (
         <>
@@ -123,205 +53,28 @@ function CreateEmployee() {
             <main className='formCreateEmployee'>
                 <form id="create-employee" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                     <div className='containerForm'>
-                        <fieldset>
-                            <legend>Personal Information</legend>
+                        <PersonalInfoSection
+                            register={register}
+                            errors={errors}
+                            setValue={setValue}
+                            control={control}
+                            registerOptions={registerOptions}
+                        />
 
-                            {/* First Name */}
-                            <label htmlFor="firstName">First Name</label>
-                            <input
-                                type="text"
-                                id="firstName"
-                                name="firstName"
-                                autoComplete="off"
-                                {...register("firstName", registerOptions.firstName)}
-                                aria-invalid={errors.firstName ? "true" : "false"}
-                                aria-describedby="firstNameError"
-                                onBlur={formatName("firstName", setValue)}
-                            />
-                            <p
-                                id="firstNameError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.firstName ? '' : 'invisible'}`}
-                            >
-                                {errors.firstName?.message || '\u00A0'}
-                            </p>
+                        <AddressSection
+                            register={register}
+                            errors={errors}
+                            setValue={setValue}
+                            control={control}
+                            registerOptions={registerOptions}
+                        />
 
+                        <InternalInfoSection
+                            control={control}
+                            errors={errors}
+                            registerOptions={registerOptions}
+                        />
 
-                            {/* Last Name */}
-                            <label htmlFor="lastName">Last Name</label>
-                            <input
-                                type="text"
-                                id="lastName"
-                                name="lastName"
-                                autoComplete="off"
-                                {...register("lastName", registerOptions.lastName)}
-                                aria-invalid={errors.lastName ? "true" : "false"}
-                                aria-describedby="lastNameError"
-                                onBlur={formatName("lastName", setValue)}
-                            />
-                            <p
-                                id="lastNameError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.lastName ? '' : 'invisible'}`}
-                            >
-                                {errors.lastName?.message || '\u00A0'}
-                            </p>
-
-                            {/* Birth Date */}
-                            <label htmlFor="dateOfBirth">Birth Date</label>
-                            <DateInput
-                                name="dateOfBirth"
-                                control={control}
-                                rules={registerOptions.dateOfBirth}
-                                maxDate={new Date()} // aujourd'hui
-                                minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 100))}
-                            />
-                            <p
-                                id="dateOfBirthError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.dateOfBirth ? '' : 'invisible'}`}
-                            >
-                                {errors.dateOfBirth?.message || '\u00A0'}
-                            </p>
-
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>Address</legend>
-
-                            {/* Street */}
-                            <label htmlFor="street">Street</label>
-                            <input
-                                type="text"
-                                id="street"
-                                name="street"
-                                {...register("street", registerOptions.street)}
-                                aria-invalid={errors.street ? "true" : "false"}
-                                aria-describedby="streetError"
-                                onBlur={trimFieldValue("street", setValue)}
-                            />
-                            <p
-                                id="streetError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.street ? '' : 'invisible'}`}
-                            >
-                                {errors.street?.message || '\u00A0'}
-                            </p>
-
-                            {/* City */}
-                            <label htmlFor="city">City</label>
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                {...register("city", registerOptions.city)}
-                                aria-invalid={errors.city ? "true" : "false"}
-                                aria-describedby="cityError"
-                                onBlur={formatName("city", setValue)}
-
-                            />
-                            <p
-                                id="cityError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.city ? '' : 'invisible'}`}
-                            >
-                                {errors.city?.message || '\u00A0'}
-                            </p>
-
-                            {/* State */}
-                            <label htmlFor="state">State</label>
-                            <SelectInput
-                                name="state"
-                                control={control}
-                                options={states.map(state => ({ value: state.abbreviation, label: state.name }))}
-                                placeholder="Select a state"
-                                rules={registerOptions.state}
-                                error={errors.state}
-                            />
-                            <p
-                                id="stateError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.state ? '' : 'invisible'}`}
-                            >
-                                {errors.state?.message || '\u00A0'}
-                            </p>
-
-                            {/* Zip Code */}
-                            <label htmlFor="zipCode">Zip Code</label>
-                            <input
-                                type="text"
-                                id="zipCode"
-                                name="zipCode"
-                                {...register("zipCode", registerOptions.zipCode)}
-                                aria-invalid={errors.zipCode ? "true" : "false"}
-                                aria-describedby="zipCodeError"
-                                onBlur={trimFieldValue("zipCode", setValue)}
-                            />
-                            <p
-                                id="zipCodeError"
-                                role="alert"
-                                aria-live="assertive"
-                                className={`errorMessage ${errors.zipCode ? '' : 'invisible'}`}
-                            >
-                                {errors.zipCode?.message || '\u00A0'}
-                            </p>
-
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>Internal information</legend>
-                            <div className='containerFormInternalInfo'>
-                                <div className='containerInputInternalInfo'>
-                                    {/* Start Date */}
-                                    <label htmlFor="startDate">Start Date</label>
-                                    <DateInput
-                                        name="startDate"
-                                        label="Start Date"
-                                        control={control}
-                                        rules={registerOptions.startDate}
-                                        minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 80))}
-                                        maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 10))}
-                                    />
-                                    <p
-                                        id="startDateError"
-                                        role="alert"
-                                        aria-live="assertive"
-                                        className={`errorMessage ${errors.startDate ? '' : 'invisible'}`}
-                                    >
-                                        {errors.startDate?.message || '\u00A0'}
-                                    </p>
-
-                                </div>
-
-                                <div className='containerInputInternalInfo'>
-                                    {/* Department */}
-                                    <label htmlFor="department">Department</label>
-                                    <SelectInput
-                                        name="department"
-                                        control={control}
-                                        options={departments.map(dep => ({ value: dep.name, label: dep.name }))}
-                                        placeholder="Select a department"
-                                        rules={registerOptions.department}
-                                        error={errors.department}
-                                    />
-                                    <p
-                                        id="departmentError"
-                                        role="alert"
-                                        aria-live="assertive"
-                                        className={`errorMessage ${errors.department ? '' : 'invisible'}`}
-                                    >
-                                        {errors.department?.message || '\u00A0'}
-                                    </p>
-
-                                </div>
-                            </div>
-                        </fieldset>
                     </div>
                     <div className='containerBtn'>
 
@@ -349,7 +102,7 @@ function CreateEmployee() {
                     onClose={() => setShowSaveModal(false)}
                     title="Confirmation"
                     showFooter={false}
-                    content="Employee Created!"
+                    content={saveModalContent}
                     className="custom-modal"
                 />
 

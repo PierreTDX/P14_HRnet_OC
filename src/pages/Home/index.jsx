@@ -1,5 +1,5 @@
 import './home.scss';
-import useInitEmployees from '../../hooks/useInitEmployees';
+import useInitEmployees from '../../utils/hooks/useInitEmployees';
 import AddUser from '../../assets/img/addUserWhite.webp';
 import ListUsers from '../../assets/img/listUsersWhite.webp';
 import NavButton from '../../components/NavButton';

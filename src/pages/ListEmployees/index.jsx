@@ -4,55 +4,44 @@ import SelectInput from '../../components/SelectInput';
 import SearchControls from '../../components/SearchControls';
 import EmployeeTable from '../../components/EmployeeTable';
 import { states } from '../../data/states'
-import { departments } from '../../data/departements'
+import { useLocalEmployees } from '../../utils/hooks/useLocalEmployees';
+import { useFilteredEmployees } from '../../utils/hooks/useFilteredEmployees';
+import { useResetInvalidFilter } from '../../utils/hooks/useResetInvalidFilter';
+import { useSearch } from '../../utils/hooks/useSearch';
+import { useFilterToggle } from '../../utils/hooks/useFilterToggle';
+import { buildStateMapping, createStateOptions } from '../../utils/tools/stateUtils';
+import { createDepartmentOptions } from '../../utils/tools/departmentUtils';
 import './listEmployees.scss';
 
 const ListEmployees = () => {
-    const [search, setSearch] = useState('');
+
+    const employees = useLocalEmployees();
+    const { search, handleSearch, handleClearSearch } = useSearch();
     const [departementFilter, setDepartementFilter] = useState('');
     const [stateFilter, setStateFilter] = useState('');
-    const [filterStep, setFilterStep] = useState(0); // 0: rien, 1: department, 2: state
 
+    // gestion de l'affichage des filtres
+    const {
+        filterStep,
+        showDepartmentSearch,
+        showStateSearch,
+        handleToggleFilterInputs
+    } = useFilterToggle(setDepartementFilter, setStateFilter);
 
-    const [showDepartmentSearch, setShowDepartmentSearch] = useState(false);
-    const [showStateSearch, setShowStateSearch] = useState(false);
+    // gestion des filtres
+    const { filteredByDepartment, filteredByState } = useFilteredEmployees(employees, search, departementFilter, stateFilter);
 
-    // Définir les options pour l'état
-    const stateOptions = states.map(state => ({
-        value: state.abbreviation,
-        label: state.name,
-    }));
+    // Liste des départements disponibles selon le filtre état
+    const departmentOptions = createDepartmentOptions(filteredByState);
 
-    // Définir les options pour department
-    const departmentOptions = departments.map(dep => ({
-        value: dep.name,
-        label: dep.name,
-    }));
+    // Liste des états disponibles selon le filtre département
+    const stateMapping = buildStateMapping(states);
+    const stateOptions = createStateOptions(filteredByDepartment, stateMapping);
 
-    const handleSearch = (event) => {
-        setSearch(event.target.value);
-    };
+    // réinitialiser les filtres si pas de correspondances à la recherche
+    useResetInvalidFilter(departementFilter, departmentOptions, setDepartementFilter);
+    useResetInvalidFilter(stateFilter, stateOptions, setStateFilter);
 
-    const handleClearSearch = () => {
-        setSearch(''); // Réinitialiser la valeur de recherche
-    };
-
-    const handleToggleFilterInputs = () => {
-        if (filterStep === 0) {
-            setShowDepartmentSearch(true);
-            setFilterStep(1);
-        } else if (filterStep === 1) {
-            setShowStateSearch(true);
-            setFilterStep(2);
-        } else {
-            // Réinitialise tout
-            setShowDepartmentSearch(false);
-            setShowStateSearch(false);
-            setDepartementFilter('');
-            setStateFilter('');
-            setFilterStep(0);
-        }
-    };
 
     return (
         <>
@@ -93,6 +82,7 @@ const ListEmployees = () => {
 
                 {/* Composant EmployeeTable pour afficher les données */}
                 <EmployeeTable
+                    employees={employees}
                     search={search}
                     departmentFilter={departementFilter}
                     stateFilter={stateFilter}

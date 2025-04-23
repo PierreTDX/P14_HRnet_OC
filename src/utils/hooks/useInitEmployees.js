@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import employees from '../data/generated_users.json'
+import employees from '../../data/generated_users.json'
 
 const useInitEmployees = () => {
   useEffect(() => {
