@@ -20,7 +20,7 @@ function CreateEmployee() {
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
-    const [showSaveModal, setshowSaveModal] = useState(false)
+    const [showSaveModal, setShowSaveModal] = useState(false)
     const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
     const [isFormEmpty, setIsFormEmpty] = useState(true);
 
@@ -73,7 +73,7 @@ function CreateEmployee() {
         };
 
         saveEmployee(formattedData); // Envoi de la donnée à l'API ou à la base
-        setshowSaveModal(true) // Affiche la modal de confirmation
+        setShowSaveModal(true) // Affiche la modal de confirmation
         console.log(formattedData);
 
         reset();
@@ -346,7 +346,7 @@ function CreateEmployee() {
 
                 <Modal
                     isOpen={showSaveModal}
-                    onClose={() => setshowSaveModal(false)}
+                    onClose={() => setShowSaveModal(false)}
                     title="Confirmation"
                     showFooter={false}
                     content="Employee Created!"
@@ -359,7 +359,8 @@ function CreateEmployee() {
                     title="Confirmation"
                     confirmText="Yes"
                     showFooter={true}
-                    content="Are you sure to clear the form"
+                    content="Are you sure to clear the form?"
+                    className="custom-modal"
                 />
 
             </main >

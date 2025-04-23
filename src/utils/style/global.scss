@@ -55,3 +55,65 @@ p {
         margin: 20px 300px;
     }
 }
+
+.custom-modal {
+
+    .modal-overlay {
+        background-color: hsl(70.47deg 75.63% 38.63% / 20%);
+    }
+
+    .modal-footer {
+        gap: 20px;
+    }
+
+    .modal-container {
+        border: 3px solid;
+        border-color: variables.$defaultBackgroundButton;
+    }
+
+    .modal-close {
+        border-radius: 0px 5px 0px 8px;
+    }
+
+    .modal-btn {
+        background-color: variables.$defaultBackgroundButton ;
+        color: variables.$defaultTextColorButton ;
+        border: 2px solid;
+        min-width: 90px;
+    }
+
+    .modal-btn-confirm {
+        // border: 2px solid;
+        // border-color: variables.$defaultBackgroundButton;
+        // transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5 ease;
+
+        &:hover {
+            background-color: green;
+            border-color: green;
+            color: white;
+        }
+    }
+
+    .modal-btn-cancel {
+        background-color: transparent;
+        // border: 2px solid;
+        border-color: variables.$defaultBackgroundButton;
+        // transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5 ease;
+
+        &:hover {
+            background-color: red;
+            border-color: red;
+            color: white;
+        }
+    }
+
+    .modal-btn:focus-visible,
+    .modal-close:focus-visible {
+        outline: 5px solid hsl(70.47deg 75.63% 38.63% / 52%);
+    }
+
+    .modal-forceFocusVisible {
+        outline: none;
+    }
+
+}

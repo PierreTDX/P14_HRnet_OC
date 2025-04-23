@@ -11,8 +11,10 @@ const Modal = ({
     width = '400px',
     confirmText = 'OK',
     cancelText = 'Cancel',
-    showFooter = 'true'
+    showFooter = 'true',
+    className = 'modal-wrapper'
 }) => {
+
     const confirmBtnRef = useRef(null)
     const closeBtnRef = useRef(null)
     const modalRef = useRef(null)
@@ -39,7 +41,11 @@ const Modal = ({
     }
 
     useEffect(() => {
+
+        const body = document.body
+
         if (isOpen) {
+
             const confirmBtn = confirmBtnRef.current
             const closeBtn = closeBtnRef.current
 
@@ -50,15 +56,19 @@ const Modal = ({
                 // Applique forceFocusVisible uniquement sur le bouton Confirm
                 if (showFooter && confirmBtn) {
                     confirmBtn.classList.add(styles.forceFocusVisible)
+                    confirmBtn.classList.add('modal-forceFocusVisible')
 
                     const handleBlur = () => {
                         confirmBtn.classList.remove(styles.forceFocusVisible)
+                        confirmBtn.classList.remove('modal-forceFocusVisible')
                         confirmBtn.removeEventListener('blur', handleBlur)
                     }
 
                     confirmBtn.addEventListener('blur', handleBlur)
                 }
             }
+            // 🔒 Bloque le scroll du body
+            body.style.overflow = 'hidden'
         }
 
         const handleKeydown = (e) => {
@@ -72,7 +82,12 @@ const Modal = ({
         }
 
         document.addEventListener('keydown', handleKeydown)
-        return () => document.removeEventListener('keydown', handleKeydown)
+
+        return () => {
+            document.removeEventListener('keydown', handleKeydown)
+            // ✅ Réactive le scroll du body
+            body.style.overflow = ''
+        }
     }, [isOpen, onClose, showFooter])
 
     if (!isOpen) return null
@@ -87,64 +102,69 @@ const Modal = ({
     const contentId = 'modal-content'
 
     return ReactDOM.createPortal(
-        <div
-            className={styles.overlay}
-            onClick={handleCloseOutside}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={title ? titleId : undefined}
-            aria-describedby={typeof content === 'string' ? contentId : undefined}
-        >
+        <div className={`${className}`}>
             <div
-                className={styles.container}
-                style={{ width }}
-                ref={modalRef}
+                className={`modal-overlay ${styles.overlay}`}
+                onClick={handleCloseOutside}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={title ? titleId : undefined}
+                aria-describedby={typeof content === 'string' ? contentId : undefined}
             >
-                {title && (
-                    <h2 className={styles.title} id={titleId}>
-                        {title}
-                    </h2>
-                )}
-
-                <button
-                    className={styles.close}
-                    onClick={onClose}
-                    aria-label="Close dialog box"
-                    ref={closeBtnRef}
-                >
-                    &times;
-                </button>
-
                 <div
-                    className={styles.content}
-                    id={typeof content === 'string' ? contentId : undefined}
+                    className={`modal-container ${styles.container}`}
+                    style={{ width }}
+                    ref={modalRef}
                 >
-                    {typeof content === 'string' ? <p>{content}</p> : content}
-                </div>
+                    {title && (
+                        <h2 className={`modal-title ${styles.title}`} id={titleId}>
+                            {title}
+                        </h2>
+                    )}
 
-                {showFooter && (
-                    <div className={styles.footer}>
-                        {cancelText && (
-                            <button
-                                className={`${styles.btn} ${styles.cancel}`}
-                                onClick={onClose}
-                                aria-label="Cancel"
-                            >
-                                {cancelText}
-                            </button>
-                        )}
-                        {confirmText && (
-                            <button
-                                className={`${styles.btn} ${styles.confirm}`}
-                                onClick={onConfirm}
-                                aria-label="Confirm"
-                                ref={confirmBtnRef}
-                            >
-                                {confirmText}
-                            </button>
-                        )}
+                    <button
+                        className={`modal-close ${styles.close}`}
+                        onClick={onClose}
+                        aria-label="Close dialog box"
+                        ref={closeBtnRef}
+                        title='Close dialog box'
+                    >
+                        &times;
+                    </button>
+
+                    <div
+                        className={`modal-content ${styles.content}`}
+                        id={typeof content === 'string' ? contentId : undefined}
+                    >
+                        {typeof content === 'string' ? <p>{content}</p> : content}
                     </div>
-                )}
+
+                    {showFooter && (
+                        <div className={`modal-footer ${styles.footer}`}>
+                            {cancelText && (
+                                <button
+                                    className={`modal-btn modal-btn-cancel ${styles.btn} ${styles.cancel}`}
+                                    onClick={onClose}
+                                    aria-label="Cancel"
+                                    title='Cancel'
+                                >
+                                    {cancelText}
+                                </button>
+                            )}
+                            {confirmText && (
+                                <button
+                                    className={`modal-btn modal-btn-confirm ${styles.btn} ${styles.confirm}`}
+                                    onClick={onConfirm}
+                                    aria-label="Confirm"
+                                    ref={confirmBtnRef}
+                                    title='Confirm'
+                                >
+                                    {confirmText}
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>,
         document.body
