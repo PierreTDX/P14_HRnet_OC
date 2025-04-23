@@ -9,6 +9,11 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    animation: overlayFadeIn 0.3s ease-out;
+}
+
+.overlayFadeOut {
+    animation: overlayFadeOut 0.3s ease-out forwards;
 }
 
 .container {
@@ -20,6 +25,10 @@
     max-height: 90vh;
     animation: modalFadeIn 0.3s ease-out;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.containerFadeOut {
+    animation: modalFadeOut 0.3s ease-out forwards;
 }
 
 .title {
@@ -115,6 +124,38 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes overlayFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
     }
 }
 

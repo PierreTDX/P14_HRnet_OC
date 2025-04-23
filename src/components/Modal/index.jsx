@@ -1,26 +1,30 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import styles from './modal.module.scss'
 
 const Modal = ({
-    isOpen,
-    onClose,
-    onConfirm,
-    content,
-    title,
-    width = '400px',
-    confirmText = 'OK',
-    cancelText = 'Cancel',
-    showFooter = 'true',
-    className = 'modal-wrapper'
+    isOpen, // Détermine si la modale est ouverte
+    onClose, // Fonction pour fermer la modale
+    onConfirm, // Fonction pour confirmer l'action
+    content, // Le contenu de la modale
+    title, // Le titre de la modale
+    width = '400px', // Largeur de la modale
+    confirmText = 'OK', // Texte du bouton de confirmation
+    cancelText = 'Cancel', // Texte du bouton d'annulation
+    showFooter = 'true', // Décide si le pied de page avec les boutons doit être affiché
+    className = 'modal-wrapper' // Classe personnalisée pour la modale
 }) => {
 
-    const confirmBtnRef = useRef(null)
-    const closeBtnRef = useRef(null)
-    const modalRef = useRef(null)
+    const confirmBtnRef = useRef(null) // Référence au bouton de confirmation
+    const closeBtnRef = useRef(null) // Référence au bouton de fermeture
+    const modalRef = useRef(null) // Référence à l'élément modal
 
+    // State pour gérer si la modale doit être rendue et si l'animation de fermeture doit être activée
+    const [shouldRender, setShouldRender] = useState(isOpen)
+    const [animationOut, setAnimationOut] = useState(false)
+
+    // Fonction pour gérer le focus dans la modale
     const trapFocus = (e) => {
-        // Vérifie si la modale est ouverte avant de manipuler les éléments focusables
         if (modalRef.current) {
             const focusableElements = modalRef.current.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -29,6 +33,7 @@ const Modal = ({
             const lastElement = focusableElements[focusableElements.length - 1]
 
             if (e.key === 'Tab') {
+                // Si Tab est pressé et on est sur le premier ou dernier élément focusable, on le redirige
                 if (e.shiftKey && document.activeElement === firstElement) {
                     e.preventDefault()
                     lastElement.focus()
@@ -42,56 +47,68 @@ const Modal = ({
 
     useEffect(() => {
 
-        const body = document.body
+        const html = document.documentElement;
 
         if (isOpen) {
 
-            const confirmBtn = confirmBtnRef.current
-            const closeBtn = closeBtnRef.current
+            // Désactive le défilement
+            html.style.overflow = 'hidden';
 
-            const targetBtn = showFooter ? confirmBtn : closeBtn
+            // Si la modale est ouverte, on l'affiche et on applique l'animation d'entrée
+            setShouldRender(true);
+            setAnimationOut(false);
+
+            const confirmBtn = confirmBtnRef.current;
+            const closeBtn = closeBtnRef.current;
+            const targetBtn = showFooter ? confirmBtn : closeBtn;
+
             if (targetBtn) {
-                targetBtn.focus()
+                targetBtn.focus();
 
-                // Applique forceFocusVisible uniquement sur le bouton Confirm
+                // Applique un style de focus forcé au bouton de confirmation si showFooter est vrai
                 if (showFooter && confirmBtn) {
-                    confirmBtn.classList.add(styles.forceFocusVisible)
-                    confirmBtn.classList.add('modal-forceFocusVisible')
-
+                    confirmBtn.classList.add(styles.forceFocusVisible, 'modal-forceFocusVisible');
                     const handleBlur = () => {
-                        confirmBtn.classList.remove(styles.forceFocusVisible)
-                        confirmBtn.classList.remove('modal-forceFocusVisible')
-                        confirmBtn.removeEventListener('blur', handleBlur)
-                    }
-
-                    confirmBtn.addEventListener('blur', handleBlur)
+                        confirmBtn.classList.remove(styles.forceFocusVisible, 'modal-forceFocusVisible');
+                        confirmBtn.removeEventListener('blur', handleBlur);
+                    };
+                    confirmBtn.addEventListener('blur', handleBlur);
                 }
             }
-            // 🔒 Bloque le scroll du body
-            body.style.overflow = 'hidden'
+
+        } else {
+            // Lorsque la modale se ferme, on active l'animation de fermeture et on arrête le rendu après 300ms
+            setAnimationOut(true);
+            // Réactive le défilement après la fermeture de la modale
+            html.style.overflow = '';
+            const timeout = setTimeout(() => {
+                setShouldRender(false);
+            }, 300);
+
+            return () => clearTimeout(timeout);
         }
 
+        // Gestion des événements clavier (fermeture avec Escape, focus avec Tab)
         const handleKeydown = (e) => {
             if (e.key === 'Escape') {
-                onClose()
+                onClose();
             } else if (e.key === 'Tab') {
-                trapFocus(e)
+                trapFocus(e);
             } else if (!showFooter && e.key === 'Enter') {
-                onClose()
+                onClose();
             }
-        }
+        };
 
-        document.addEventListener('keydown', handleKeydown)
+        // Écouteur d'événements sur le clavier
+        document.addEventListener('keydown', handleKeydown);
+        return () => document.removeEventListener('keydown', handleKeydown);
 
-        return () => {
-            document.removeEventListener('keydown', handleKeydown)
-            // ✅ Réactive le scroll du body
-            body.style.overflow = ''
-        }
-    }, [isOpen, onClose, showFooter])
+    }, [isOpen, onClose, showFooter]);
 
-    if (!isOpen) return null
+    // Si la modale ne doit pas être rendue, rien n'est affiché
+    if (!shouldRender) return null
 
+    // Gestion de la fermeture de la modale en cliquant à l'extérieur
     const handleCloseOutside = (e) => {
         if (e.target.classList.contains(styles.overlay)) {
             onClose()
@@ -104,7 +121,7 @@ const Modal = ({
     return ReactDOM.createPortal(
         <div className={`${className}`}>
             <div
-                className={`modal-overlay ${styles.overlay}`}
+                className={`modal-overlay ${styles.overlay} ${animationOut ? styles.overlayFadeOut : ''}`}
                 onClick={handleCloseOutside}
                 role="dialog"
                 aria-modal="true"
@@ -112,7 +129,7 @@ const Modal = ({
                 aria-describedby={typeof content === 'string' ? contentId : undefined}
             >
                 <div
-                    className={`modal-container ${styles.container}`}
+                    className={`modal-container ${styles.container} ${animationOut ? styles.containerFadeOut : ''}`}
                     style={{ width }}
                     ref={modalRef}
                 >
@@ -127,7 +144,7 @@ const Modal = ({
                         onClick={onClose}
                         aria-label="Close dialog box"
                         ref={closeBtnRef}
-                        title='Close dialog box'
+                        title="Close dialog box"
                     >
                         &times;
                     </button>
@@ -146,7 +163,7 @@ const Modal = ({
                                     className={`modal-btn modal-btn-cancel ${styles.btn} ${styles.cancel}`}
                                     onClick={onClose}
                                     aria-label="Cancel"
-                                    title='Cancel'
+                                    title="Cancel"
                                 >
                                     {cancelText}
                                 </button>
@@ -157,7 +174,7 @@ const Modal = ({
                                     onClick={onConfirm}
                                     aria-label="Confirm"
                                     ref={confirmBtnRef}
-                                    title='Confirm'
+                                    title="Confirm"
                                 >
                                     {confirmText}
                                 </button>

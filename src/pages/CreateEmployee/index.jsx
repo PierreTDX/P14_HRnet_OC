@@ -350,6 +350,7 @@ function CreateEmployee() {
                     title="Confirmation"
                     showFooter={false}
                     content="Employee Created!"
+                    className="custom-modal"
                 />
 
                 <Modal
@@ -357,7 +358,7 @@ function CreateEmployee() {
                     onClose={() => setShowClearConfirmModal(false)}
                     onConfirm={handleConfirmClear}
                     title="Confirmation"
-                    confirmText="Yes"
+                    confirmText="Yes, Clear"
                     showFooter={true}
                     content="Are you sure to clear the form?"
                     className="custom-modal"
