@@ -12,7 +12,7 @@ import InternalInfoSection from '../../components/FormSections/InternalInfoSecti
 import { getRegisterOptions } from '../../components/FormSections/formConfig'
 
 function CreateEmployee() {
-    const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm({ mode: "all" })
+    const { register, handleSubmit, formState: { errors }, reset, setValue, control, trigger } = useForm({ mode: "all" })
     const { saveEmployee } = useCreateEmployee()
     const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
@@ -59,6 +59,7 @@ function CreateEmployee() {
                             setValue={setValue}
                             control={control}
                             registerOptions={registerOptions}
+                            trigger={trigger}
                         />
 
                         <AddressSection
@@ -67,6 +68,7 @@ function CreateEmployee() {
                             setValue={setValue}
                             control={control}
                             registerOptions={registerOptions}
+                            trigger={trigger}
                         />
 
                         <InternalInfoSection

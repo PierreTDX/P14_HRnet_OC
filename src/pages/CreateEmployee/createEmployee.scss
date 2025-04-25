@@ -1,5 +1,31 @@
 @use './../../utils/style/variables.scss';
 
+.input-container {
+    position: relative;
+    margin-top: 20px;
+}
+
+label {
+    position: absolute;
+    left: 10px;
+    bottom: 6px;
+    color: #aaa;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    z-index: 5;
+}
+
+input:focus+label,
+label.focused {
+    bottom: 32px;
+    left: 8px;
+    font-size: 12px;
+    color: #333;
+}
+
+
+
+
 .formCreateEmployee {
     align-content: center;
 }
