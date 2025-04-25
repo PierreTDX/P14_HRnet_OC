@@ -50,7 +50,6 @@ const Modal = ({
         const html = document.documentElement;
 
         if (isOpen) {
-            console.log("🚀 ~ useEffect ~ isOpen:", isOpen)
 
             // Désactive le défilement
             html.style.overflow = 'hidden';
@@ -104,11 +103,8 @@ const Modal = ({
 
         return () => {
             document.removeEventListener('keydown', handleKeydown);
-            // Réactivation du défilement quand toutes les modales sont fermées
-            const activeModals = document.querySelectorAll('.modal-wrapper');
-            if (activeModals.length === 0) {
-                html.style.overflow = '';
-            }
+            // Réactivation du défilement
+            html.style.overflow = '';
         };
 
     }, [isOpen, onClose, showFooter]);
