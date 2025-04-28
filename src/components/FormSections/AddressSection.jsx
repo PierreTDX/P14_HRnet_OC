@@ -42,6 +42,17 @@ function AddressSection({ register, errors, setValue, control, registerOptions, 
                 }))}
             />
 
+            <FloatingInput
+                name="zipCode"
+                label="Zip Code"
+                register={register}
+                registerOptions={registerOptions.zipCode}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                control={control}
+            />
+
         </fieldset>
     );
 }

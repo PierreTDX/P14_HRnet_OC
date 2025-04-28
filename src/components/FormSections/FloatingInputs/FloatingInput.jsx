@@ -36,7 +36,11 @@ function FloatingInput({ name, label, register, registerOptions, errors, setValu
                     aria-describedby={`${name}Error`}
                     onFocus={() => setFocused(true)}
                     onBlur={handleBlur} // Utilise handleBlur pour gérer le formatage
-                    className={isActive ? 'focused' : ''}
+                    onChange={(e) => {
+                        register(name).onChange(e);  // Applique l'onChange de react-hook-form
+                        trigger(name);  // Valide immédiatement le champ
+                    }}
+                    className={`${isActive ? 'focused' : ''} ${errors[name] ? 'redInput' : ''}`}
                 />
             </div>
 

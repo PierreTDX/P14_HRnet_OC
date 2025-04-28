@@ -23,7 +23,8 @@ function FloatingSelectInput({ name, label, control, options, rules, errors }) {
                     value={value}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
-                    className={isActive ? 'focused' : ''}
+                    className={`${isActive ? 'focused' : ''} ${errors[name] ? 'redInput' : ''}`}
+                    errors={errors}
                 />
             </div>
             <ErrorMessage name={name} errors={errors} />

@@ -23,7 +23,7 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
                     maxDate={maxDate}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
-                    className={isActive ? 'focused' : ''}
+                    className={`${isActive ? 'focused' : ''} ${errors[name] ? 'redInput' : ''}`}
                 />
             </div>
             <ErrorMessage name={name} errors={errors} />
