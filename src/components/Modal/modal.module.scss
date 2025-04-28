@@ -17,14 +17,36 @@
 }
 
 .container {
+    --border-radius: 8px;
+    --border-width: 2px;
+
     background: white;
-    border-radius: 8px;
+    border-width: var(--border-width);
+    border-style: solid;
+    border-color: black;
+
+    border-radius: var(--border-radius);
     padding: 24px;
     margin: 24px;
     position: relative;
     max-height: 90vh;
     animation: modalFadeIn 0.3s ease-out;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.success {
+    border-width: var(--border-width);
+    border-style: solid;
+    border-color: #28a745;
+    background-color: #d4edda;
+}
+
+.error {
+    border-width: var(--border-width);
+    border-style: solid;
+    border-color: red;
+    background-color: #f8d7da;
 }
 
 .containerFadeOut {
@@ -92,7 +114,7 @@
     top: 0;
     right: 0;
     cursor: pointer;
-    border-radius: 0px 8px 0px 8px;
+    border-radius: 0 calc(var(--border-radius) - var(--border-width)) 0 calc(var(--border-radius) - var(--border-width));
     background-color: red;
     color: white;
     border: none;

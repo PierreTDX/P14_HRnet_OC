@@ -12,7 +12,8 @@ const Modal = ({
     confirmText = 'OK', // Texte du bouton de confirmation
     cancelText = 'Cancel', // Texte du bouton d'annulation
     showFooter = true, // Décide si le pied de page avec les boutons doit être affiché
-    className = 'modal-wrapper' // Classe personnalisée pour la modale
+    className = 'modal-wrapper', // Classe personnalisée pour la modale
+    variant = 'default' // ➔ 'default' | 'success' | 'error'
 }) => {
 
     const confirmBtnRef = useRef(null) // Référence au bouton de confirmation
@@ -121,6 +122,7 @@ const Modal = ({
 
     const titleId = 'modal-title'
     const contentId = 'modal-content'
+    const containerClass = `${styles.container} ${animationOut ? styles.containerFadeOut : ''} ${variant === 'success' ? styles.success : ''} ${variant === 'error' ? styles.error : ''}`;
 
     return ReactDOM.createPortal(
         <div className={`${className}`}>
@@ -133,7 +135,7 @@ const Modal = ({
                 aria-describedby={typeof content === 'string' ? contentId : undefined}
             >
                 <div
-                    className={`modal-container ${styles.container} ${animationOut ? styles.containerFadeOut : ''}`}
+                    className={`modal-border ${variant === 'default' ? 'modal-container' : ''} ${variant === 'success' ? 'modal-container-success' : ''} ${variant === 'error' ? 'modal-container-error' : ''} ${containerClass}`}
                     style={{ width }}
                     ref={modalRef}
                 >

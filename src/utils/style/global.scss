@@ -66,13 +66,13 @@ p {
         gap: 20px;
     }
 
-    .modal-container {
-        border: 3px solid;
-        border-color: variables.$defaultBackgroundButton;
+    .modal-border {
+        --border-radius: 8px;
+        --border-width: 3px;
     }
 
-    .modal-close {
-        border-radius: 0px 5px 0px 8px;
+    .modal-container {
+        border-color: variables.$defaultBackgroundButton;
     }
 
     .modal-btn {
@@ -83,9 +83,6 @@ p {
     }
 
     .modal-btn-confirm {
-        // border: 2px solid;
-        // border-color: variables.$defaultBackgroundButton;
-        // transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5 ease;
 
         &:hover {
             background-color: green;
@@ -96,9 +93,7 @@ p {
 
     .modal-btn-cancel {
         background-color: transparent;
-        // border: 2px solid;
         border-color: variables.$defaultBackgroundButton;
-        // transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5 ease;
 
         &:hover {
             background-color: red;

@@ -102,10 +102,11 @@ function CreateEmployee() {
                 <Modal
                     isOpen={showSaveModal}
                     onClose={() => setShowSaveModal(false)}
-                    title="Confirmation"
+                    title="Success"
                     showFooter={false}
                     content={saveModalContent}
                     className="custom-modal"
+                // variant='success'
                 />
 
                 <Modal
@@ -114,7 +115,6 @@ function CreateEmployee() {
                     onConfirm={handleConfirmClear}
                     title="Confirmation"
                     confirmText="Yes, Clear"
-                    showFooter={true}
                     content="Are you sure to clear the form?"
                     className="custom-modal"
                 />
