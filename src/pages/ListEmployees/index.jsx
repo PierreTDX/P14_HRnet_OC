@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SearchBar from '../../components/SearchBar';
-import SelectInput from '../../components/SelectInput';
+import SelectInput from '../../components/FormSections/FloatingInputs/Inputs/SelectInput';
 import SearchControls from '../../components/SearchControls';
 import EmployeeTable from '../../components/EmployeeTable';
 import { states } from '../../data/states'

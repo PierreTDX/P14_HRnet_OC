@@ -1,7 +1,6 @@
 import React from 'react';
-import FloatingInput from './FloatingInput';
-import FloatingDateInput from './FloatingDateInput';
-
+import FloatingInput from './FloatingInputs/FloatingInput';
+import FloatingDateInput from './FloatingInputs/FloatingDateInput';
 
 function PersonalInfoSection({ register, errors, setValue, control, registerOptions, trigger }) {
 
@@ -30,7 +29,6 @@ function PersonalInfoSection({ register, errors, setValue, control, registerOpti
                 trigger={trigger}
                 control={control}
             />
-
 
             <FloatingDateInput
                 name="dateOfBirth"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { Controller } from 'react-hook-form';
-import ClearButton from '../ClearButton';
+import ClearButton from '../../../../ClearButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateInput.scss';
 
@@ -52,9 +52,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                             }}
                             className={className}
                         />
-                        {field.value && (
-                            <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
-                        )}
+                        <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
                     </div>
                 );
             }}

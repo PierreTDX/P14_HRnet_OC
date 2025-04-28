@@ -13,6 +13,7 @@ label {
     pointer-events: none;
     transition: all 0.2s ease-in-out;
     z-index: 5;
+
 }
 
 input:focus+label,
@@ -22,9 +23,6 @@ label.focused {
     font-size: 12px;
     color: #333;
 }
-
-
-
 
 .formCreateEmployee {
     align-content: center;
@@ -95,12 +93,6 @@ legend {
     color: #0000008B;
 }
 
-label {
-    display: block;
-    margin-top: 5px;
-    margin-bottom: 1px;
-}
-
 .containerBtn {
     display: flex;
     margin-inline: 30px;
@@ -111,6 +103,7 @@ label {
 }
 
 @media (min-width: 741px) {
+
     .pageTitle {
         font-size: 24px;
     }
@@ -119,16 +112,16 @@ label {
     legend {
         font-size: 16px;
     }
-}
 
-@media (min-width: 741px) {
+    input:focus+label,
+    label.focused {
+        font-size: 14px;
+    }
+
     .containerForm {
         display: flex;
         flex-wrap: wrap;
 
-        label {
-            margin-top: 20px;
-        }
     }
 
     .containerForm>* {

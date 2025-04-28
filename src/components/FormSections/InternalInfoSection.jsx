@@ -1,9 +1,7 @@
 import React from 'react';
 import { departments } from '../../data/departements'
-import DateInput from '../../components/DateInput'
-import SelectInput from '../../components/SelectInput'
-
-
+import FloatingDateInput from './FloatingInputs/FloatingDateInput';
+import FloatingSelectInput from './FloatingInputs/FloatingSelectInput';
 
 function InternalInfoSection({ errors, control, registerOptions }) {
     return (
@@ -11,46 +9,30 @@ function InternalInfoSection({ errors, control, registerOptions }) {
             <legend>Internal information</legend>
             <div className='containerFormInternalInfo'>
                 <div className='containerInputInternalInfo'>
-                    {/* Start Date */}
-                    <label htmlFor="startDate">Start Date</label>
-                    <DateInput
+
+                    <FloatingDateInput
                         name="startDate"
                         label="Start Date"
                         control={control}
                         rules={registerOptions.startDate}
+                        errors={errors}
                         minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 80))}
                         maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 10))}
                     />
-                    <p
-                        id="startDateError"
-                        role="alert"
-                        aria-live="assertive"
-                        className={`errorMessage ${errors.startDate ? '' : 'invisible'}`}
-                    >
-                        {errors.startDate?.message || '\u00A0'}
-                    </p>
 
                 </div>
 
                 <div className='containerInputInternalInfo'>
-                    {/* Department */}
-                    <label htmlFor="department">Department</label>
-                    <SelectInput
+
+                    <FloatingSelectInput
                         name="department"
+                        label="Department"
                         control={control}
-                        options={departments.map(dep => ({ value: dep.name, label: dep.name }))}
-                        placeholder="Select a department"
+                        errors={errors}
                         rules={registerOptions.department}
-                        error={errors.department}
+                        options={departments.map(dep => ({ value: dep.name, label: dep.name }))}
+
                     />
-                    <p
-                        id="departmentError"
-                        role="alert"
-                        aria-live="assertive"
-                        className={`errorMessage ${errors.department ? '' : 'invisible'}`}
-                    >
-                        {errors.department?.message || '\u00A0'}
-                    </p>
 
                 </div>
             </div>

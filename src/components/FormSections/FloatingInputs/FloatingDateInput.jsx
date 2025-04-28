@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useWatch } from 'react-hook-form';
-import DateInput from '../../components/DateInput';
-import ErrorMessage from './ErrorMessage';
+import DateInput from './Inputs/DateInput';
+import ErrorMessage from '../ErrorMessage';
 
 function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDate }) {
     const [focused, setFocused] = useState(false);

@@ -1,8 +1,7 @@
 import React from 'react';
-import FloatingInput from './FloatingInput';
+import FloatingInput from './FloatingInputs/FloatingInput';
+import FloatingSelectInput from './FloatingInputs/FloatingSelectInput';
 import { states } from '../../data/states';
-import SelectInput from '../../components/SelectInput';
-import ErrorMessage from './ErrorMessage';
 
 function AddressSection({ register, errors, setValue, control, registerOptions, trigger }) {
     return (
@@ -31,35 +30,18 @@ function AddressSection({ register, errors, setValue, control, registerOptions, 
                 control={control}
             />
 
-            {/* State */}
-            <div className="input-container">
-                <label htmlFor="state" className={errors.state ? 'focused' : ''}>
-                    State
-                </label>
-                <SelectInput
-                    name="state"
-                    control={control}
-                    options={states.map(state => ({
-                        value: state.abbreviation,
-                        label: state.name
-                    }))}
-                    placeholder="Select a state"
-                    rules={registerOptions.state}
-                    error={errors.state}
-                />
-                <ErrorMessage name="state" errors={errors} />
-            </div>
-
-            <FloatingInput
-                name="zipCode"
-                label="Zip Code"
-                register={register}
-                registerOptions={registerOptions.zipCode}
-                errors={errors}
-                setValue={setValue}
-                trigger={trigger}
+            <FloatingSelectInput
+                name="state"
+                label="State"
                 control={control}
+                errors={errors}
+                rules={registerOptions.state}
+                options={states.map(state => ({
+                    value: state.abbreviation,
+                    label: state.name
+                }))}
             />
+
         </fieldset>
     );
 }

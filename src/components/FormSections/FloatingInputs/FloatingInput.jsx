@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useWatch } from 'react-hook-form';
-import { formatName, trimFieldValue } from '../../utils/tools/sanitizeTrimmedInput'
-import ErrorMessage from './ErrorMessage';
+import { formatName, trimFieldValue } from '../../../utils/tools/sanitizeTrimmedInput'
+import ErrorMessage from '../ErrorMessage';
 
 function FloatingInput({ name, label, register, registerOptions, errors, setValue, trigger, control, type = "text" }) {
 
