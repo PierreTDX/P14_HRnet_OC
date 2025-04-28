@@ -77,6 +77,8 @@ function SelectInput({ name, control, options, rules, value, onChange, onFocus, 
         <Select
             {...field}
             name={name}
+            inputId={name} // <-- ID unique pour l'input généré
+            aria-labelledby={`${name}-label`} // <-- Relie au label par son ID
             options={sortedOptions}
             styles={customStyles}
             placeholder={(isFocused || !control) ? `select a ${name}` : ''}

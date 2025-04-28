@@ -12,7 +12,7 @@ function FloatingSelectInput({ name, label, control, options, rules, errors }) {
     return (
         <>
             <div className="input-container">
-                <label htmlFor={name} className={isActive ? 'focused' : ''}>
+                <label htmlFor={name} className={isActive ? 'focused' : ''} id={`${name}-label`}>
                     {label}
                 </label>
                 <SelectInput

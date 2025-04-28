@@ -32,6 +32,11 @@
     margin-bottom: 8px !important;
 }
 
+.react-datepicker__month-dropdown-container,
+.react-datepicker__year-dropdown-container {
+    margin-inline: 10px;
+}
+
 .react-datepicker__navigation-icon::before {
     border-color: white !important; // change la couleur du chevron
 }
