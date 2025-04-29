@@ -5,9 +5,7 @@ import ClearButton from '../../../../ClearButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateInput.scss';
 
-function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className, placeholder }) {
-
-    // const [isFocused, setIsFocused] = useState(false);
+function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className, placeholder, trigger }) {
 
     // Gère la saisie clavier et ajoute les slashs
     const handleRawChange = (e) => {
@@ -33,7 +31,10 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                         <DatePicker
                             id={name}
                             selected={field.value ? new Date(field.value) : null}
-                            onChange={(date) => field.onChange(date)}
+                            onChange={(date) => {
+                                field.onChange(date);
+                                trigger(name);
+                            }}
                             onChangeRaw={handleRawChange} // assistance à la saisie
                             dateFormat="MM/dd/yyyy"
                             placeholderText={placeholder}

@@ -2,7 +2,7 @@ import React from 'react';
 import FloatingInput from './FloatingInputs/FloatingInput';
 import FloatingDateInput from './FloatingInputs/FloatingDateInput';
 
-function PersonalInfoSection({ register, errors, setValue, control, registerOptions, trigger }) {
+function PersonalInfoSection({ register, errors, setValue, control, registerOptions, trigger, isSubmitted }) {
 
     return (
         <fieldset>
@@ -17,6 +17,7 @@ function PersonalInfoSection({ register, errors, setValue, control, registerOpti
                 setValue={setValue}
                 trigger={trigger}
                 control={control}
+                isSubmitted={isSubmitted}
             />
 
             <FloatingInput
@@ -28,6 +29,7 @@ function PersonalInfoSection({ register, errors, setValue, control, registerOpti
                 setValue={setValue}
                 trigger={trigger}
                 control={control}
+                isSubmitted={isSubmitted}
             />
 
             <FloatingDateInput
@@ -38,6 +40,7 @@ function PersonalInfoSection({ register, errors, setValue, control, registerOpti
                 errors={errors}
                 minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 100))}
                 maxDate={new Date()}
+                trigger={trigger}
             />
 
         </fieldset>

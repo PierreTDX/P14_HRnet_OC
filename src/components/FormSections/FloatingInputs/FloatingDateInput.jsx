@@ -3,7 +3,7 @@ import { useWatch } from 'react-hook-form';
 import DateInput from './Inputs/DateInput';
 import ErrorMessage from '../ErrorMessage';
 
-function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDate }) {
+function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDate, trigger }) {
     const [focused, setFocused] = useState(false);
     const value = useWatch({ control, name });
     const wrapperRef = useRef(null);
@@ -37,10 +37,12 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
                     rules={rules}
                     minDate={minDate}
                     maxDate={maxDate}
+                    onChange={() => trigger(name)}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
                     className={`${isActive ? 'focused' : ''} ${errors[name] ? 'redInput' : ''}`}
                     placeholder={focused ? 'mm/dd/yyyy' : ''}
+                    trigger={trigger}
                 />
             </div>
             <ErrorMessage name={name} errors={errors} />

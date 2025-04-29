@@ -3,7 +3,7 @@ import FloatingInput from './FloatingInputs/FloatingInput';
 import FloatingSelectInput from './FloatingInputs/FloatingSelectInput';
 import { states } from '../../data/states';
 
-function AddressSection({ register, errors, setValue, control, registerOptions, trigger }) {
+function AddressSection({ register, errors, setValue, control, registerOptions, trigger, isSubmitted }) {
     return (
         <fieldset>
             <legend>Address</legend>
@@ -17,6 +17,7 @@ function AddressSection({ register, errors, setValue, control, registerOptions, 
                 setValue={setValue}
                 trigger={trigger}
                 control={control}
+                isSubmitted={isSubmitted}
             />
 
             <FloatingInput
@@ -28,6 +29,7 @@ function AddressSection({ register, errors, setValue, control, registerOptions, 
                 setValue={setValue}
                 trigger={trigger}
                 control={control}
+                isSubmitted={isSubmitted}
             />
 
             <FloatingSelectInput
@@ -51,6 +53,7 @@ function AddressSection({ register, errors, setValue, control, registerOptions, 
                 setValue={setValue}
                 trigger={trigger}
                 control={control}
+                isSubmitted={isSubmitted}
             />
 
         </fieldset>

@@ -3,7 +3,7 @@ import { departments } from '../../data/departements'
 import FloatingDateInput from './FloatingInputs/FloatingDateInput';
 import FloatingSelectInput from './FloatingInputs/FloatingSelectInput';
 
-function InternalInfoSection({ errors, control, registerOptions }) {
+function InternalInfoSection({ errors, control, registerOptions, trigger }) {
     return (
         <fieldset>
             <legend>Internal information</legend>
@@ -18,6 +18,7 @@ function InternalInfoSection({ errors, control, registerOptions }) {
                         errors={errors}
                         minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 80))}
                         maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 10))}
+                        trigger={trigger}
                     />
 
                 </div>
@@ -31,7 +32,7 @@ function InternalInfoSection({ errors, control, registerOptions }) {
                         errors={errors}
                         rules={registerOptions.department}
                         options={departments.map(dep => ({ value: dep.name, label: dep.name }))}
-
+                        trigger={trigger}
                     />
 
                 </div>
