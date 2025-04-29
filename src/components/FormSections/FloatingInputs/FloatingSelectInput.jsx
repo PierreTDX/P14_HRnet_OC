@@ -4,7 +4,6 @@ import SelectInput from './Inputs/SelectInput';
 import ErrorMessage from '../ErrorMessage';
 
 function FloatingSelectInput({ name, label, control, options, rules, errors }) {
-    console.log("🚀 ~ FloatingSelectInput ~ options:", options)
     const [focused, setFocused] = useState(false);
     const value = useWatch({ control, name });
 

@@ -21,6 +21,18 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
         e.target.value = value; // Mise à jour de l'input directement
     };
 
+    const handleBlur = (e) => {
+        // Retarde le test de perte de focus pour laisser le temps aux autres interactions
+        setTimeout(() => {
+            const stillInside = document.activeElement.closest('.date-input-wrapper');
+            if (!stillInside) {
+                setIsFocused(false);
+            }
+        }, 200); // Délai de 200 ms pour éviter que l'événement soit trop rapide
+
+        onBlur?.(e);
+    };
+
     return (
         <Controller
             name={name}
@@ -45,19 +57,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                                 setIsFocused(true);
                                 onFocus?.(e);
                             }}
-                            onBlur={(e) => {
-                                // Retarde le test de perte de focus pour laisser le temps aux autres interactions
-                                setTimeout(() => {
-                                    const stillInside = document.activeElement.closest('.date-input-wrapper');
-                                    if (!stillInside) {
-                                        setIsFocused(false);
-                                    }
-                                }, 100);
-                                field.onBlur();
-                                onBlur?.(e);
-                            }}
-                            open={isFocused}
-                            onClickOutside={() => setIsFocused(false)}
+                            onBlur={handleBlur}
                             className={className}
                         />
                         <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
