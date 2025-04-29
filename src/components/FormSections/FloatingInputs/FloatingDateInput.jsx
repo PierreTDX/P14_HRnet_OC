@@ -3,27 +3,30 @@ import { useWatch } from 'react-hook-form';
 import DateInput from './Inputs/DateInput';
 import ErrorMessage from '../ErrorMessage';
 
-function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDate, trigger }) {
+function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDate, trigger, formRef }) {
     const [focused, setFocused] = useState(false);
     const value = useWatch({ control, name });
     const wrapperRef = useRef(null);
 
     const isActive = focused || !!value;
 
-    // Gérer clics extérieurs (surtout vers un SelectInput!)
+    // Gérer le focus OUT (surtout vers un SelectInput!)
     useEffect(() => {
-        const handleClickOutside = (e) => {
-            const datepicker = document.querySelector('.react-datepicker');
-            const isInDatePicker = datepicker?.contains(e.target);
-            const isInWrapper = wrapperRef.current?.contains(e.target);
-
-            if (!isInDatePicker && !isInWrapper) {
+        const handleFocusOut = (e) => {
+            const isInWrapper = wrapperRef.current?.contains(e.relatedTarget);
+            if (!isInWrapper) {
                 setFocused(false);
             }
         };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+
+        const currentWrapper = wrapperRef.current;
+        currentWrapper?.addEventListener('focusout', handleFocusOut);
+
+        return () => {
+            currentWrapper?.removeEventListener('focusout', handleFocusOut);
+        };
     }, []);
+
 
     return (
         <>
@@ -43,6 +46,7 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
                     className={`${isActive ? 'focused' : ''} ${errors[name] ? 'redInput' : ''}`}
                     placeholder={focused ? 'mm/dd/yyyy' : ''}
                     trigger={trigger}
+                    formRef={formRef}
                 />
             </div>
             <ErrorMessage name={name} errors={errors} />

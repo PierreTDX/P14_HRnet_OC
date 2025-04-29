@@ -1,51 +1,43 @@
 import './selectInput.scss';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Select from 'react-select';
 import { Controller } from 'react-hook-form';
 import ClearButton from '../../../../ClearButton';
 
-function SelectInput({ name, control, options, rules, value, onChange, onFocus, onBlur, className, errors }) {
+function SelectInput({
+    name,
+    control,
+    options,
+    rules,
+    value,
+    onChange,
+    onFocus,
+    onBlur,
+    className,
+    errors
+}) {
     const [isFocused, setIsFocused] = useState(false);
-    const isError = errors?.[name]; // Vérifie si une erreur existe pour ce champ
+    const [menuOpen, setMenuOpen] = useState(false);
+    const isError = errors?.[name];
+    const selectRef = useRef(null);
 
     const sortedOptions = [...options].sort((a, b) =>
         a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
     );
 
-    const handleChange = (fieldOnChange) => (val) => {
-        const selectedValue = val ? val.value : '';
-        fieldOnChange(selectedValue);
-        onChange?.(selectedValue);
-    };
-
-    const handleFocus = (e) => {
-        setIsFocused(true);
-        onFocus?.(e);
-    };
-
-    const handleBlur = (fieldOnBlur) => (e) => {
-        setIsFocused(false);
-        fieldOnBlur?.();
-        onBlur?.(e);
-    };
-
-    // Styles dynamiques basés sur le focus et l'erreur
     const customStyles = {
         control: (base, state) => ({
             ...base,
             minHeight: 32,
             height: 32,
-            paddingTop: 0,
-            paddingBottom: 0,
+            padding: 0,
             paddingLeft: 0,
             borderRadius: 8,
             borderWidth: state.isFocused ? 2 : 1,
             borderStyle: 'solid',
             borderColor: isError
-                ? 'red' // Si l'erreur est présente, la bordure devient rouge
-                : state.isFocused
-                    ? 'hsl(70.47deg 75.63% 38.63%)' // Si l'élément est focus, la couleur de la bordure est différente
-                    : 'hsl(70.47deg 75.63% 38.63%)', // Par défaut, une autre couleur
+                ? 'red'
+                : 'hsl(70.47deg 75.63% 38.63%)',
             boxShadow: 'none',
             '&:hover': {
                 borderColor: isError ? 'red' : 'hsl(70.47deg 75.63% 38.63%)',
@@ -73,26 +65,60 @@ function SelectInput({ name, control, options, rules, value, onChange, onFocus, 
                     : 'transparent',
             color: state.isSelected ? 'white' : 'black',
             cursor: 'pointer',
-            '&:hover': {
-                backgroundColor: 'hsl(70.47deg 75.63% 60%)',
-            },
         }),
+    };
+
+    const handleChange = (fieldOnChange) => (val) => {
+        const selectedValue = val ? val.value : '';
+        fieldOnChange(selectedValue);
+        onChange?.(selectedValue);
+    };
+
+    const handleFocus = (e) => {
+        setIsFocused(true);
+        onFocus?.(e);
+    };
+
+    const handleBlur = (fieldOnBlur) => (e) => {
+        setIsFocused(false);
+        fieldOnBlur?.();
+        onBlur?.(e);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !menuOpen) {
+            e.preventDefault();
+            const form = document.querySelector('form#create-employee');
+
+            // Sélectionne les éléments input et les boutons avec la classe btnForm
+            const focusables = Array.from(
+                form.querySelectorAll('input, button.btnForm')
+            ).filter(el => !el.disabled && el.offsetParent !== null); // Elimine les éléments non focusables
+
+            const index = focusables.indexOf(document.activeElement);
+            if (index !== -1 && index < focusables.length - 1) {
+                focusables[index + 1].focus();
+            }
+        }
     };
 
     const renderSelect = (field = {}) => (
         <Select
             {...field}
+            ref={selectRef}
             name={name}
-            inputId={name} // <-- ID unique pour l'input généré
-            aria-labelledby={`${name}-label`} // <-- Relie au label par son ID
+            inputId={name}
+            aria-labelledby={`${name}-label`}
             options={sortedOptions}
-            styles={customStyles} // Applique directement customStyles sans avoir besoin de passer des paramètres
-            placeholder={(isFocused || !control) ? `Select a ${name}` : ''}
+            styles={customStyles}
+            placeholder={isFocused || !control ? `Select a ${name}` : ''}
             isSearchable
             value={sortedOptions.find(option => option.value === (field.value ?? value)) || null}
             onChange={handleChange(field.onChange ?? onChange)}
             onFocus={handleFocus}
             onBlur={handleBlur(field.onBlur)}
+            onMenuOpen={() => setMenuOpen(true)}
+            onMenuClose={() => setMenuOpen(false)}
             classNamePrefix="selectInput"
             className={control ? `${className} selectInput-container` : 'selectInputSearch-container'}
             getOptionLabel={
@@ -100,6 +126,7 @@ function SelectInput({ name, control, options, rules, value, onChange, onFocus, 
                     ? (e) => `${e.value} - ${e.label}`
                     : undefined
             }
+            onKeyDown={handleKeyDown}
         />
     );
 
@@ -113,14 +140,22 @@ function SelectInput({ name, control, options, rules, value, onChange, onFocus, 
                     render={({ field }) => (
                         <>
                             {renderSelect(field)}
-                            <ClearButton value={field.value} onChange={() => field.onChange('')} label="Clear filter" />
+                            <ClearButton
+                                value={field.value}
+                                onChange={() => field.onChange('')}
+                                label="Clear filter"
+                            />
                         </>
                     )}
                 />
             ) : (
                 <>
                     {renderSelect()}
-                    <ClearButton value={value} onChange={() => onChange('')} label="Clear filter" />
+                    <ClearButton
+                        value={value}
+                        onChange={() => onChange('')}
+                        label="Clear filter"
+                    />
                 </>
             )}
         </div>

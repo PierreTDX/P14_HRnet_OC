@@ -44,6 +44,14 @@ p {
     font-size: 14px;
 }
 
+.btn:focus-visible,
+.logo:focus-visible,
+.clearButton:focus-visible {
+    outline: 5px solid hsl(70.47deg 75.63% 38.63% / 52%);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
 @media (min-width: 1340px) {
     main {
         margin: 20px 100px;

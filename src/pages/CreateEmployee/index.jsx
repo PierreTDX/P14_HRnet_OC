@@ -1,5 +1,5 @@
 import './createEmployee.scss'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
 import Modal from '../../components/Modal'
@@ -47,11 +47,49 @@ function CreateEmployee() {
 
     const registerOptions = getRegisterOptions(dateOfBirth);
 
+    const formRef = useRef(null);
+
+    // Navigation au clavier dans le formulaire avec la touche ENTER
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter') {
+                const form = formRef.current;
+                if (!form) return;
+
+                const isReactSelectInput = e.target.classList.contains('select__input') ||
+                    e.target.getAttribute('aria-expanded') !== null ||
+                    e.target.closest('.select__control');
+
+                if (isReactSelectInput) return;
+
+                let focusableElements = Array.from(
+                    form.querySelectorAll('input')
+                ).filter(el => !el.disabled && el.offsetParent !== null);
+
+
+                const index = focusableElements.indexOf(document.activeElement);
+
+                if (index > -1 && index < focusableElements.length - 1) {
+                    e.preventDefault();
+                    focusableElements[index + 1].focus();
+                }
+            }
+        };
+
+        const formElement = formRef.current;
+        formElement?.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            formElement?.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isFormEmpty]); // <= ❗ important
+
+
     return (
         <>
             <h1 className='pageTitle'>Add New Employee</h1>
             <main className='formCreateEmployee'>
-                <form id="create-employee" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                <form id="create-employee" onSubmit={handleSubmit(onSubmit)} autoComplete="off" ref={formRef}>
                     <div className='containerForm'>
                         <PersonalInfoSection
                             register={register}
@@ -61,6 +99,7 @@ function CreateEmployee() {
                             registerOptions={registerOptions}
                             trigger={trigger}
                             isSubmitted={isSubmitted}
+                            formRef={formRef}
                         />
 
                         <AddressSection
@@ -71,6 +110,7 @@ function CreateEmployee() {
                             registerOptions={registerOptions}
                             trigger={trigger}
                             isSubmitted={isSubmitted}
+                            formRef={formRef}
                         />
 
                         <InternalInfoSection
@@ -78,6 +118,8 @@ function CreateEmployee() {
                             errors={errors}
                             registerOptions={registerOptions}
                             trigger={trigger}
+                            isSubmitted={isSubmitted}
+                            formRef={formRef}
                         />
 
                     </div>

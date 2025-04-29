@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import './navButton.scss';
 
-const NavButton = ({ to, icon, alt = '', text, className = '', type, onClick }) => {
+const NavButton = ({ to, icon, alt = '', text, className = '', type, onClick}) => {
     const isButton = type === 'submit' || type === 'button';
 
     const content = (
