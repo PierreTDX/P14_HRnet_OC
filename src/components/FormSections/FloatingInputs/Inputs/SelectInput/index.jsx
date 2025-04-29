@@ -95,7 +95,11 @@ function SelectInput({ name, control, options, rules, value, onChange, onFocus, 
             onBlur={handleBlur(field.onBlur)}
             classNamePrefix="selectInput"
             className={control ? `${className} selectInput-container` : 'selectInputSearch-container'}
-            getOptionLabel={name === 'state' ? (e) => `${e.value} - ${e.label}` : undefined}
+            getOptionLabel={
+                !control && name === 'state'
+                    ? (e) => `${e.value} - ${e.label}`
+                    : undefined
+            }
         />
     );
 

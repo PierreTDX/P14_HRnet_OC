@@ -46,10 +46,18 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                                 onFocus?.(e);
                             }}
                             onBlur={(e) => {
-                                setIsFocused(false);
+                                // Retarde le test de perte de focus pour laisser le temps aux autres interactions
+                                setTimeout(() => {
+                                    const stillInside = document.activeElement.closest('.date-input-wrapper');
+                                    if (!stillInside) {
+                                        setIsFocused(false);
+                                    }
+                                }, 100);
                                 field.onBlur();
                                 onBlur?.(e);
                             }}
+                            open={isFocused}
+                            onClickOutside={() => setIsFocused(false)}
                             className={className}
                         />
                         <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
