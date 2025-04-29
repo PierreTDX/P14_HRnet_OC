@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import { Controller } from 'react-hook-form';
 import ClearButton from '../../../../ClearButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateInput.scss';
 
-function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className }) {
+function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className, placeholder }) {
 
-    const [isFocused, setIsFocused] = useState(false);
+    // const [isFocused, setIsFocused] = useState(false);
 
     // Gère la saisie clavier et ajoute les slashs
     const handleRawChange = (e) => {
@@ -21,24 +21,13 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
         e.target.value = value; // Mise à jour de l'input directement
     };
 
-    const handleBlur = (e) => {
-        // Retarde le test de perte de focus pour laisser le temps aux autres interactions
-        setTimeout(() => {
-            const stillInside = document.activeElement.closest('.date-input-wrapper');
-            if (!stillInside) {
-                setIsFocused(false);
-            }
-        }, 200); // Délai de 200 ms pour éviter que l'événement soit trop rapide
-
-        onBlur?.(e);
-    };
-
     return (
         <Controller
             name={name}
             control={control}
             rules={rules}
             render={({ field }) => {
+                // console.log("🚀 ~ DateInput ~ isFocused:", isFocused)
                 return (
                     <div className="date-input-wrapper">
                         <DatePicker
@@ -47,17 +36,17 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                             onChange={(date) => field.onChange(date)}
                             onChangeRaw={handleRawChange} // assistance à la saisie
                             dateFormat="MM/dd/yyyy"
-                            placeholderText={isFocused ? 'mm/dd/yyyy' : ''}
+                            placeholderText={placeholder}
                             minDate={minDate}
                             maxDate={maxDate}
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            onFocus={(e) => {
-                                setIsFocused(true);
-                                onFocus?.(e);
+                            onFocus={onFocus}
+                            onBlur={(e) => {
+                                field.onBlur();
+                                onBlur?.(e);
                             }}
-                            onBlur={handleBlur}
                             className={className}
                         />
                         <ClearButton value={field.value} onChange={() => field.onChange(null)} label="Clear" />
