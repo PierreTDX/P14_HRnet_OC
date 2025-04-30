@@ -12,18 +12,19 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
 
     // Gérer le focus OUT (surtout vers un SelectInput!)
     useEffect(() => {
-        const handleFocusOut = (e) => {
-            const isInWrapper = wrapperRef.current?.contains(e.relatedTarget);
-            if (!isInWrapper) {
+        const handleClickOutside = (e) => {
+            const isInWrapper = wrapperRef.current?.contains(e.target);
+            const datepicker = document.querySelector('.react-datepicker');
+            const isInDatePicker = datepicker?.contains(e.target);
+
+            if (!isInWrapper && !isInDatePicker) {
                 setFocused(false);
             }
         };
 
-        const currentWrapper = wrapperRef.current;
-        currentWrapper?.addEventListener('focusout', handleFocusOut);
-
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            currentWrapper?.removeEventListener('focusout', handleFocusOut);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
