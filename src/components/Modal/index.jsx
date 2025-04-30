@@ -47,48 +47,20 @@ const Modal = ({
     }
 
     useEffect(() => {
-
         const html = document.documentElement;
 
         if (isOpen) {
-
-            // Désactive le défilement
             html.style.overflow = 'hidden';
-
-            // Si la modale est ouverte, on l'affiche et on applique l'animation d'entrée
-            setShouldRender(true);
-            setAnimationOut(false);
-
-            const confirmBtn = confirmBtnRef.current;
-            const closeBtn = closeBtnRef.current;
-            const targetBtn = showFooter ? confirmBtn : closeBtn;
-
-            if (targetBtn) {
-                targetBtn.focus();
-
-                // Applique un style de focus forcé au bouton de confirmation si showFooter est vrai
-                if (showFooter && confirmBtn) {
-                    confirmBtn.classList.add(styles.forceFocusVisible, 'modal-forceFocusVisible');
-                    const handleBlur = () => {
-                        confirmBtn.classList.remove(styles.forceFocusVisible, 'modal-forceFocusVisible');
-                        confirmBtn.removeEventListener('blur', handleBlur);
-                    };
-                    confirmBtn.addEventListener('blur', handleBlur);
-                }
-            }
-
+            setShouldRender(true);       // Permet au DOM de se monter
+            setAnimationOut(false);      // Lance l'animation d’entrée
         } else {
-            // Lorsque la modale se ferme, on active l'animation de fermeture et on arrête le rendu après 300ms
-            setAnimationOut(true);
-
+            setAnimationOut(true);       // Lance l'animation de sortie
             const timeout = setTimeout(() => {
-                setShouldRender(false);
+                setShouldRender(false);    // Supprime le rendu après 300ms
             }, 300);
-
             return () => clearTimeout(timeout);
         }
 
-        // Gestion des événements clavier (fermeture avec Escape, focus avec Tab)
         const handleKeydown = (e) => {
             if (e.key === 'Escape') {
                 onClose();
@@ -99,16 +71,36 @@ const Modal = ({
             }
         };
 
-        // Écouteur d'événements sur le clavier
         document.addEventListener('keydown', handleKeydown);
-
         return () => {
             document.removeEventListener('keydown', handleKeydown);
-            // Réactivation du défilement
             html.style.overflow = '';
         };
 
     }, [isOpen, onClose, showFooter]);
+
+    useEffect(() => {
+        if (!shouldRender) return;
+
+        const confirmBtn = confirmBtnRef.current;
+        const closeBtn = closeBtnRef.current;
+        const targetBtn = showFooter ? confirmBtn : closeBtn;
+
+        if (targetBtn) {
+            targetBtn.focus();
+
+            if (showFooter && confirmBtn) {
+                confirmBtn.classList.add(styles.forceFocusVisible, 'modal-forceFocusVisible');
+
+                const handleBlur = () => {
+                    confirmBtn.classList.remove(styles.forceFocusVisible, 'modal-forceFocusVisible');
+                    confirmBtn.removeEventListener('blur', handleBlur);
+                };
+
+                confirmBtn.addEventListener('blur', handleBlur);
+            }
+        }
+    }, [shouldRender, showFooter]);
 
     // Si la modale ne doit pas être rendue, rien n'est affiché
     if (!shouldRender) return null
@@ -152,7 +144,23 @@ const Modal = ({
                         ref={closeBtnRef}
                         title="Close dialog box"
                     >
-                        &times;
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                            focusable="false"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+
                     </button>
 
                     <div
