@@ -23,8 +23,12 @@ const CustomDateInput = React.forwardRef(({ value, onClick, onChange, onFocus, o
     );
 });
 
-function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className, placeholder, trigger, formRef }) {
-    const [isOpen, setIsOpen] = useState(false);
+function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, className, placeholder, trigger, formRef, open, setOpen }) {
+    const isControlled = typeof open !== 'undefined';
+    const [internalOpen, setInternalOpen] = useState(false);
+    const isOpenFinal = isControlled ? open : internalOpen;
+
+    const updateOpen = setOpen ?? setInternalOpen;
 
     const handleRawChange = (e) => {
         if (e.nativeEvent.inputType === undefined) return; // Ignore click from calendar
@@ -38,19 +42,19 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
     };
 
     const handleFocus = (e) => {
-        setIsOpen(true); // Ouvre le calendrier quand le champ est focus
+        updateOpen(true); // Ouvre le calendrier quand le champ est focus
         onFocus?.(e);
     };
 
     const handleBlur = (e, field) => {
         field.onBlur();
         onBlur?.(e);
-        setIsOpen(false); // Ferme le calendrier lorsque le champ perd le focus
+        updateOpen(false); // Ferme le calendrier lorsque le champ perd le focus
     };
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            setIsOpen(false);
+            updateOpen(false);
         }
     };
 
@@ -67,7 +71,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                         onChange={(date) => {
                             field.onChange(date);
                             trigger(name);
-                            setIsOpen(false);
+                            updateOpen(false);
                         }}
                         onChangeRaw={handleRawChange}
                         dateFormat="MM/dd/yyyy"
@@ -79,7 +83,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                         dropdownMode="select"
                         onFocus={handleFocus}
                         onBlur={(e) => handleBlur(e, field)}
-                        open={isOpen}
+                        open={isOpenFinal}
                         className={className}
                         onKeyDown={handleKeyDown}
 
@@ -88,7 +92,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                                 ref={formRef}
                                 onFocus={handleFocus}  // Handle focus on the input itself
                                 onBlur={(e) => handleBlur(e, field)} // Handle blur when focus is lost
-                            // onKeyDown={handleKeyDown}
+                                onKeyDown={handleKeyDown}
                             />}
                     />
                     <ClearButton

@@ -27,7 +27,6 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
         };
     }, []);
 
-
     return (
         <>
             <div className="input-container" ref={wrapperRef}>
@@ -47,6 +46,8 @@ function FloatingDateInput({ name, label, control, rules, errors, minDate, maxDa
                     placeholder={focused ? 'mm/dd/yyyy' : ''}
                     trigger={trigger}
                     formRef={formRef}
+                    open={focused}
+                    setOpen={setFocused}
                 />
             </div>
             <ErrorMessage name={name} errors={errors} />
