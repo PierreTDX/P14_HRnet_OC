@@ -5,7 +5,7 @@ import ClearButton from '../../../../ClearButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateInput.scss';
 
-const CustomDateInput = React.forwardRef(({ value, onClick, onChange, onFocus, onBlur, placeholder, className, onKeyDown }, ref) => {
+const CustomDateInput = React.forwardRef(({ value, onClick, onChange, onFocus, onBlur, placeholder, className, onKeyDown, id }, ref) => {
 
     return (
         <input
@@ -19,6 +19,7 @@ const CustomDateInput = React.forwardRef(({ value, onClick, onChange, onFocus, o
             placeholder={placeholder}
             className={className}
             onKeyDown={onKeyDown}
+            id={id}
         />
     );
 });
@@ -93,6 +94,7 @@ function DateInput({ name, control, rules, minDate, maxDate, onFocus, onBlur, cl
                                 onFocus={handleFocus}  // Handle focus on the input itself
                                 onBlur={(e) => handleBlur(e, field)} // Handle blur when focus is lost
                                 onKeyDown={handleKeyDown}
+                                id={name}
                             />}
                     />
                     <ClearButton
