@@ -2,7 +2,6 @@ import './createEmployee.scss'
 import { useState, useRef, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
-import Modal from '../../components/Modal'
 import { useCreateEmployee } from '../../utils/hooks/useCreateEmployee'
 import { useFormIsEmpty } from '../../utils/hooks/useFormIsEmpty'
 import { formatEmployeeData } from '../../utils/tools/employeeFormatters'
@@ -10,6 +9,7 @@ import PersonalInfoSection from '../../components/FormSections/PersonalInfoSecti
 import AddressSection from '../../components/FormSections/AddressSection'
 import InternalInfoSection from '../../components/FormSections/InternalInfoSection'
 import { getRegisterOptions } from '../../components/FormSections/formConfig'
+import { Modal } from '@ptdx/modal'
 
 function CreateEmployee() {
     const { register, handleSubmit, formState: { errors, isSubmitted }, reset, setValue, control, trigger } = useForm({ mode: "onchange" })
