@@ -11,14 +11,15 @@
     }
 
     .searchIcon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px 0px 0px 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: variables.$defaultBackgroundButton;
-        border-color: variables.$defaultBackgroundButton;
+        .icon-search {
+            width: 32px;
+            height: 32px;
+            background-color: variables.$defaultBackgroundButton;
+            background-image: url(./../../assets/img/chercher18x18.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 8px 0px 0px 8px;
+        }
     }
 }
 

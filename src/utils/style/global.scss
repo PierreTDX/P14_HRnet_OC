@@ -1,4 +1,5 @@
 @use './variables.scss';
+@use './fonts.scss';
 
 body,
 button {
@@ -50,6 +51,14 @@ p {
     outline: 5px solid hsl(70.47deg 75.63% 38.63% / 52%);
     outline-offset: 2px;
     border-radius: 8px;
+}
+
+.pageTitle {
+    text-align: center;
+    background-color: variables.$defaultBackgroundTitle;
+    padding: 5px;
+    font-size: 18px;
+    color: variables.$defaultTextColorTitle;
 }
 
 @media (min-width: 1340px) {

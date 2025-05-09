@@ -1,20 +1,36 @@
 @use './../../utils/style/variables.scss';
 
 .searchControls {
-    min-width: 32px;
-    height: 32px;
-    align-content: center;
-    background-color: variables.$defaultBackgroundButton;
-    border-radius: 50%;
-    color: #ffffff;
     align-self: flex-start;
     cursor: pointer;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-:hover.searchControls {
-    background-color: variables.$defaultBackgroundButtonHover;
+.plus {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-image: url(./../../assets/img/plus.png);
+    background-color: variables.$defaultBackgroundButton;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+        background-color: variables.$defaultBackgroundButtonHover;
+
+    }
+}
+
+.moins {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-image: url(./../../assets/img/moins.png);
+    background-color: variables.$defaultBackgroundButton;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+        background-color: variables.$defaultBackgroundButtonHover;
+
+    }
 }

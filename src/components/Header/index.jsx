@@ -1,7 +1,6 @@
 import './header.scss';
-import Logo from '../../assets/img/logoNoBackground.webp';
-import AddUser from '../../assets/img/addUserWhite.webp';
-import ListUsers from '../../assets/img/listUsersWhite.webp';
+import AddUser from '../../assets/img/addUserWhite24x24.webp';
+import ListUsers from '../../assets/img/listUsersWhite24x24.webp';
 import { NavLink, useLocation } from 'react-router-dom';
 import NavButton from '../../components/NavButton';
 
@@ -11,7 +10,6 @@ function Header() {
     return (
         <header>
             <NavLink to="/" className="logo" title="Go Home">
-                <img width="80px" height="80px" src={Logo} alt="logo" />
                 <h1>HRnet</h1>
             </NavLink>
 

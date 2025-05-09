@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import SearchBar from '../../components/SearchBar';
-import SelectInput from '../../components/FormSections/FloatingInputs/Inputs/SelectInput';
 import SearchControls from '../../components/SearchControls';
 import EmployeeTable from '../../components/EmployeeTable';
+import LoaderComponent from '../../components/Loader/lodaerComponent';
 import { states } from '../../data/states'
 import { useLocalEmployees } from '../../utils/hooks/useLocalEmployees';
 import { useFilteredEmployees } from '../../utils/hooks/useFilteredEmployees';
@@ -12,6 +12,8 @@ import { useFilterToggle } from '../../utils/hooks/useFilterToggle';
 import { buildStateMapping, createStateOptions } from '../../utils/tools/stateUtils';
 import { createDepartmentOptions } from '../../utils/tools/departmentUtils';
 import './listEmployees.scss';
+
+const SelectInput = lazy(() => import('../../components/FormSections/FloatingInputs/Inputs/SelectInput'));
 
 const ListEmployees = () => {
 
@@ -51,25 +53,26 @@ const ListEmployees = () => {
                     <div className='searchContainer'>
                         <SearchBar value={search} onChange={handleSearch} onClear={handleClearSearch} />
 
-                        {showDepartmentSearch && (
-                            <SelectInput
-                                name="department"
-                                options={departmentOptions}
-                                placeholder="Select a department"
-                                value={departementFilter}
-                                onChange={(val) => setDepartementFilter(val)}
-                            />
-                        )}
-
-                        {showStateSearch && (
-                            <SelectInput
-                                name="state"
-                                options={stateOptions}
-                                placeholder="Select a state"
-                                value={stateFilter}
-                                onChange={(val) => setStateFilter(val)}
-                            />
-                        )}
+                        <Suspense fallback={<LoaderComponent />}>
+                            {showDepartmentSearch && (
+                                <SelectInput
+                                    name="department"
+                                    options={departmentOptions}
+                                    placeholder="Select a department"
+                                    value={departementFilter}
+                                    onChange={(val) => setDepartementFilter(val)}
+                                />
+                            )}
+                            {showStateSearch && (
+                                <SelectInput
+                                    name="state"
+                                    options={stateOptions}
+                                    placeholder="Select a state"
+                                    value={stateFilter}
+                                    onChange={(val) => setStateFilter(val)}
+                                />
+                            )}
+                        </Suspense>
                     </div>
 
                     {(filterStep < 2 || (showDepartmentSearch && showStateSearch)) && (

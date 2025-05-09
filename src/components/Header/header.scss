@@ -19,13 +19,27 @@ header {
     display: flex;
     align-items: center;
     gap: 20px;
+    // dimensions du logo
+    width: max-content;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background-image: url("/img/logoNoBackground60x60.webp");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    h1 {
+        color: variables.$defaultTextColorLogo;
+        font-weight: 500;
+        font-size: 24px;
+    }
 }
 
-.logo h1 {
-    color: variables.$defaultTextColorLogo;
-    font-weight: 500;
-    font-size: 40px;
-}
 
 nav {
     display: flex;
@@ -33,16 +47,21 @@ nav {
     font-size: 16px;
 }
 
-@container (max-width: 700px) {
+@container (min-width: 700px) {
 
-    .logo img {
-        width: 60px;
-        height: auto;
+    .logo {
+
+        &::before {
+            width: 80px;
+            height: 80px;
+            background-image: url("/img/logoNoBackground80x80.webp");
+        }
+
+        h1 {
+            font-size: 40px;
+        }
     }
 
-    .logo h1 {
-        font-size: 24px;
-    }
 }
 
 @media (max-width: 500px) {
