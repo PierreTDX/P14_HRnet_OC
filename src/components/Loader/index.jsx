@@ -4,8 +4,9 @@ function Loader() {
 
     return (
         <>
-            <main>
-                Loading...
+            <main className='wrapper-loader'>
+                <div className='loader'></div>
+                <p>Loading...</p>
             </main>
         </>
     )

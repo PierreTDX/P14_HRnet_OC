@@ -1,1 +1,13 @@
-@use './../../utils/style/variables.scss'
+@use './../../utils/style/variables.scss';
+
+.wrapper-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    h1 {
+        color: variables.$defaultBackgroundButton;
+    }
+}

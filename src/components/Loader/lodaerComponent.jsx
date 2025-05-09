@@ -1,9 +1,12 @@
+import './lodaerComponent.scss'
 
 function LoaderComponent() {
 
     return (
         <>
-            Loading...
+            <div className='wapper-custom_loader_progress-bar'>
+                <div className="custom_loader_progress-bar"></div>
+            </div>
         </>
     )
 }

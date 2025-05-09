@@ -1,0 +1,32 @@
+@use './../../utils/style/variables.scss';
+
+.wapper-custom_loader_progress-bar {
+    width: 210px;
+    display: flex;
+    justify-content: center;
+}
+
+.custom_loader_progress-bar {
+    width: 20px;
+    height: 20px;
+    position: relative;
+}
+
+.custom_loader_progress-bar {
+    width: 60px;
+    height: 5px;
+    border-radius: 2.5px;
+    background: linear-gradient(90deg, variables.$defaultBackgroundButton 30%, #f3f3f3 30%);
+    background-size: 300% 100%;
+    animation: custom_progress 0.3s ease-in-out infinite;
+}
+
+@keyframes custom_progress {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
