@@ -48,6 +48,8 @@ function saveEmployee() {
     $('#confirmation').modal();
 }
 
+window.saveEmployee = saveEmployee;
+
 const states = [
     {
         "name": "Alabama",

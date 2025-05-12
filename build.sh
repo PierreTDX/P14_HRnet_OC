@@ -1,4 +1,6 @@
 #!/bin/bash
+# ouvrir un terminal Git Bash
+# puis lancer la commande ./build.sh
 
 echo "📁 Création du dossier dist..."
 mkdir -p dist
