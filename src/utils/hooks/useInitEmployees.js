@@ -1,17 +1,14 @@
 import { useEffect } from 'react';
-import employees from '../../data/generated_users.json';
+import { useEmployeeStore } from '../../store/employeeStore';
 
 const useInitEmployees = () => {
-  useEffect(() => {
-    // Utiliser un délai pour initialiser les employés sans bloquer le rendu
-    const initEmployees = () => {
-      if (!localStorage.getItem('employees')) {
-        localStorage.setItem('employees', JSON.stringify(employees));
-      }
-    };
+  const initEmployees = useEmployeeStore((state) => state.initEmployees);
 
-    setTimeout(initEmployees, 0); // Exécution après le rendu principal
-  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      initEmployees();
+    }, 0); // Exécution après le rendu principal
+  }, [initEmployees]);
 };
 
 export default useInitEmployees;

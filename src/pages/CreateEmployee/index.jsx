@@ -2,7 +2,8 @@ import './createEmployee.scss'
 import { useState, useRef, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import NavButton from '../../components/NavButton'
-import { useCreateEmployee } from '../../utils/hooks/useCreateEmployee'
+// import { useCreateEmployee } from '../../utils/hooks/useCreateEmployee' // avant zustand
+import { useEmployeeStore } from '../../store/employeeStore'
 import { useFormIsEmpty } from '../../utils/hooks/useFormIsEmpty'
 import { formatEmployeeData } from '../../utils/tools/employeeFormatters'
 import PersonalInfoSection from '../../components/FormSections/PersonalInfoSection'
@@ -13,7 +14,8 @@ import { Modal } from '@ptdx/modal'
 
 function CreateEmployee() {
     const { register, handleSubmit, formState: { errors, isSubmitted }, reset, setValue, control, trigger } = useForm({ mode: "onchange" })
-    const { saveEmployee } = useCreateEmployee()
+    // const { saveEmployee } = useCreateEmployee() // avant zustand
+    const addEmployee = useEmployeeStore((state) => state.addEmployee); // via Zustand
     const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
     const [showSaveModal, setShowSaveModal] = useState(false)
@@ -37,7 +39,8 @@ function CreateEmployee() {
 
         const formattedData = formatEmployeeData(data);
 
-        saveEmployee(formattedData); // Envoi de la donnée à l'API ou à la base
+        // saveEmployee(formattedData); // Envoi de la donnée à l'API ou à la base // avant zustand
+        addEmployee(formattedData); // via Zustand
         setSaveModalContent(`Employee ${formattedData.firstName} ${formattedData.lastName} Created!`);
         setShowSaveModal(true) // Affiche la modal de confirmation
         console.log(formattedData);

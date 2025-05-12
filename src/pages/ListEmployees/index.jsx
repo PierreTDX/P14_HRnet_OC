@@ -4,7 +4,8 @@ import SearchControls from '../../components/SearchControls';
 import EmployeeTable from '../../components/EmployeeTable';
 import LoaderComponent from '../../components/Loader/lodaerComponent';
 import { states } from '../../data/states'
-import { useLocalEmployees } from '../../utils/hooks/useLocalEmployees';
+// import { useLocalEmployees } from '../../utils/hooks/useLocalEmployees'; // avant zustand
+import { useEmployeeStore } from '../../store/employeeStore';
 import { useFilteredEmployees } from '../../utils/hooks/useFilteredEmployees';
 import { useResetInvalidFilter } from '../../utils/hooks/useResetInvalidFilter';
 import { useSearch } from '../../utils/hooks/useSearch';
@@ -17,7 +18,8 @@ const SelectInput = lazy(() => import('../../components/FormSections/FloatingInp
 
 const ListEmployees = () => {
 
-    const employees = useLocalEmployees();
+    // const employees = useLocalEmployees(); // avant zustand
+    const employees = useEmployeeStore((state) => state.employees);
     const { search, handleSearch, handleClearSearch } = useSearch();
     const [departementFilter, setDepartementFilter] = useState('');
     const [stateFilter, setStateFilter] = useState('');
