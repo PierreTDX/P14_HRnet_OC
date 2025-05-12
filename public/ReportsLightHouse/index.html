@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lighthouse Report Summary</title>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            color: #333;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        h2 {
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        h2 a {
+            color: #555;
+            text-decoration: underline;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            width: 305px;
+        }
+
+        .section {
+            margin-top: 2rem;
+        }
+
+        .report-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .report-card {
+            background: white;
+            padding: 0.1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .report-card:hover {
+            transform: scale(1.03);
+        }
+
+        .report-card h3 {
+            text-decoration: none;
+            color: #0066cc;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .report-card h3:hover {
+            color: #ff6600;
+            transform: scale(1.05);
+        }
+
+        .scores {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .score {
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .score span.label {
+            font-weight: bold;
+        }
+
+        .score span.value {
+            font-family: monospace;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+        }
+
+        .score span.value::after {
+            content: ' 🏆';
+        }
+
+        .score span.value {
+            font-family: monospace;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+        }
+
+        .verdict {
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📊 Lighthouse Report Summary</h1>
+    <p>Audit results for the 2 application pages</p>
+
+    <div class="section">
+        <h2>⚛️ <a href="https://p14-hrnet-oc.vercel.app/" target="_blank">New Version</a> - React</h2>
+        <div class="report-links">
+            <a href="React/P14HrNet-React-CreateEmployee.html" target="_blank">
+                <div class="report-card">
+                    <h3>🏠 Add Employee Page</h3>
+                    <div class="scores">
+                        <div class="score"><span class="label">Performance</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Accessibility</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Best Practices</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">SEO</span><span class="value">100/100</span></div>
+                    </div>
+                    <p class="verdict">🟢 Excellent</p>
+                </div>
+            </a>
+
+            <a href="React/P14HrNet-React-ListEmployees.html" target="_blank">
+                <div class="report-card">
+                    <h3>📄 List Employees Page</h3>
+                    <div class="scores">
+                        <div class="score"><span class="label">Performance</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Accessibility</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Best Practices</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">SEO</span><span class="value">100/100</span></div>
+                    </div>
+                    <p class="verdict">🟢 Excellent</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📦 <a href="https://p14-hrnet-jquery-oc.vercel.app/" target="_blank">Old Version</a> - jQuery</h2>
+        <div class="report-links">
+            <a href="Jquery/P14HrNet-JQuery-CreateEmployee.html" target="_blank">
+                <div class="report-card">
+                    <h3>🏠 Add Employee Page</h3>
+                    <div class="scores">
+                        <div class="score"><span class="label">Performance</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Accessibility</span><span class="value">91/100</span>
+                        </div>
+                        <div class="score"><span class="label">Best Practices</span><span class="value">93/100</span>
+                        </div>
+                        <div class="score"><span class="label">SEO</span><span class="value">82/100</span></div>
+                    </div>
+                    <p class="verdict">🟡 Bon</p>
+                </div>
+            </a>
+
+            <a href="Jquery/P14HrNet-JQuery-ListEmployees.html" target="_blank">
+                <div class="report-card">
+                    <h3>📄 List Employees Page</h3>
+                    <div class="scores">
+                        <div class="score"><span class="label">Performance</span><span class="value">100/100</span>
+                        </div>
+                        <div class="score"><span class="label">Accessibility</span><span class="value">96/100</span>
+                        </div>
+                        <div class="score"><span class="label">Best Practices</span><span class="value">93/100</span>
+                        </div>
+                        <div class="score"><span class="label">SEO</span><span class="value">73/100</span></div>
+                    </div>
+                    <p class="verdict">🟡 Bon</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.score span.value').forEach(el => {
+            const num = parseInt(el.textContent, 10);
+            if (num === 100) {
+                el.style.backgroundColor = '#d4edda'; // vert très clair
+                el.style.color = '#155724';
+            } else if (num >= 95) {
+                el.style.backgroundColor = '#cce5ff'; // bleu clair pour excellent score
+                el.style.color = '#004085';
+            } else if (num >= 90) {
+                el.style.backgroundColor = '#fff3cd'; // jaune pour bon score
+                el.style.color = '#856404';
+            } else if (num >= 70) {
+                el.style.backgroundColor = '#f8d7da'; // rouge clair pour moyen
+                el.style.color = '#721c24';
+            } else {
+                el.style.backgroundColor = '#f5c6cb'; // rouge plus fort pour faible
+                el.style.color = '#721c24';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

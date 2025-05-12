@@ -3,6 +3,7 @@
 .home {
     align-content: center;
     text-align: center;
+    position: relative;
 }
 
 .home h1 {
@@ -16,4 +17,12 @@
     flex-direction: column;
     align-items: center;
     margin: 50px 10px 50px 10px;
+}
+
+.perf {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #00000045
 }

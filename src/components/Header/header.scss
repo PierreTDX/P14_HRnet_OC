@@ -69,3 +69,15 @@ nav {
         padding: 10px;
     }
 }
+
+@media (min-width: 1340px) {
+    header {
+        padding: 20px 100px;
+    }
+}
+
+@media (min-width: 1700px) {
+    header {
+        padding: 20px 300px;
+    }
+}

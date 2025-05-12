@@ -26,7 +26,7 @@ function Home() {
                     className="btnHome"
                 />
             </nav>
-
+            <a href="ReportsLightHouse\index.html" className='perf'>see performance</a>
         </main>
     );
 }

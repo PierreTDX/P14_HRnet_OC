@@ -68,23 +68,13 @@ select {
         border-color: variables.$defaultBackgroundButton;
         outline: none;
     }
-
-
 }
 
 .input-container {
     .redInput {
         border-color: red;
-
-        // input.selectInput__input {
-        //     border-color: red !important;
-        // }
     }
-
-
 }
-
-
 
 fieldset {
     margin-top: 20px;
